@@ -10,7 +10,8 @@ A markdown editor that runs entirely in the browser. No accounts, no servers, no
 - CodeMirror 6 for the editor
 - markdown-it for preview rendering
 - Vitest for unit tests, Playwright for E2E tests
-- Deployed via GitHub Pages
+- Deployed via GitHub Pages at [jackbush.github.io/carver](https://jackbush.github.io/carver)
+- IBM Plex Mono, IBM Plex Sans, and IBM Plex Serif self-hosted (woff2) for privacy — no Google Fonts requests
 
 ## Layout
 
@@ -46,12 +47,12 @@ Fixed at the bottom of the page.
 
 ### Settings Modal
 
-Opened via the footer settings button. All settings persist to localStorage.
+Opened via the footer settings button. Dismissed by clicking outside the modal or via an explicit close button. All settings persist to localStorage.
 
 | Setting | Type | Options |
 |---------|------|---------|
 | Editor theme | Dropdown | Dark / Light |
-| Editor caret | Dropdown | Line / Block / Chevron / Underscore |
+| Editor caret | Dropdown | Line / Block / Underscore |
 | Preview theme | Dropdown | Dark / Light |
 | Preview font | Dropdown | Serif / Sans-serif |
 | Tint | Dropdown | Cool (blue) / Warm (amber/orange — clean and energising, not dull sepia). This is the global accent colour — it tints everything: caret, selection, divider, toggle, controls |
@@ -62,8 +63,13 @@ Opened via the footer settings button. All settings persist to localStorage.
 
 - On first load, editor and preview themes default to the browser's light/dark preference
 - All settings and document content persist to localStorage — returning users see their previous work and preferences
+- If no saved content exists, a demo document is shown with example markdown formatted in the style of Raymond Carver
 - Preview updates live as the user types, with no delay
 - Markdown syntax highlighting in the editor updates automatically as the user types
+
+## Single Document
+
+Carver is a single-document editor. One document per browser, persisted to localStorage. There are no tabs, no file system, no open/save dialogs.
 
 ## Requirements
 
@@ -71,4 +77,10 @@ Opened via the footer settings button. All settings persist to localStorage.
 - Unit tests covering settings logic, markdown parsing, and theme switching
 - E2E tests covering edit/preview sync, settings persistence, mobile toggle, and accessibility auditing
 - Deployable via GitHub Pages workflow
-- Fully private: no data sent to any backend or external API
+- Fully private: no data sent to any backend or external API, fonts self-hosted
+
+---
+
+## Future Additions
+
+- **Multi-file management**: A sidebar or file switcher allowing users to create, name, and switch between multiple documents, all stored in localStorage. Could extend to import/export of `.md` files.
