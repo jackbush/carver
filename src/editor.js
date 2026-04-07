@@ -61,10 +61,11 @@ const highlighting = syntaxHighlighting(HighlightStyle.define([
   { tag: tags.heading4, fontWeight: '700' },
   { tag: tags.heading5, fontWeight: '700' },
   { tag: tags.heading6, fontWeight: '700' },
-  { tag: tags.processingInstruction, opacity: '0.32', color: 'inherit' },
-  { tag: tags.punctuation, opacity: '0.32', color: 'inherit' },
-  { tag: tags.meta, opacity: '0.32', color: 'inherit' },
-  { tag: tags.url, opacity: '0.38', fontStyle: 'italic', color: 'inherit' },
+  // Markdown syntax chars dimmed — CSS var ensures AA contrast in all themes
+  { tag: tags.processingInstruction, color: 'var(--editor-syntax-dim)' },
+  { tag: tags.punctuation, color: 'var(--editor-syntax-dim)' },
+  { tag: tags.meta, color: 'var(--editor-syntax-dim)' },
+  { tag: tags.url, color: 'var(--editor-syntax-dim)', fontStyle: 'italic' },
 ]));
 
 export function createEditor(container, content, onChange) {

@@ -73,11 +73,17 @@ function updateFocusLabels() {
   labelPreview.classList.toggle('active', focusView === 'preview');
 }
 
-document.getElementById('focus-toggle').addEventListener('click', () => {
-  focusView = focusView === 'editor' ? 'preview' : 'editor';
+function switchFocusView(view) {
+  focusView = view;
   document.body.classList.toggle('show-preview', focusView === 'preview');
   updateFocusLabels();
-});
+}
+
+document.getElementById('focus-toggle').addEventListener('click', () =>
+  switchFocusView(focusView === 'editor' ? 'preview' : 'editor'));
+
+document.getElementById('label-edit').addEventListener('click', () => switchFocusView('editor'));
+document.getElementById('label-preview').addEventListener('click', () => switchFocusView('preview'));
 
 window.addEventListener('resize', applyFocusMode);
 applyFocusMode();
