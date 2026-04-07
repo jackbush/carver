@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carver</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div id="editor-pane" role="region" aria-label="Markdown editor">
+        <div id="editor"></div>
+      </div>
+
+      <div id="divider" aria-hidden="true"></div>
+
+      <div id="preview-pane" role="region" aria-label="Rendered preview">
+        <div id="preview"></div>
+      </div>
+
+      <!-- Mobile / focus mode top bar -->
+      <div id="focus-bar" aria-label="View toggle">
+        <span class="focus-label" id="label-edit">Edit</span>
+        <button id="focus-toggle" aria-label="Switch between edit and preview">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M7 5l-5 5 5 5M13 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <span class="focus-label" id="label-preview">Preview</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <div id="footer-brand">
+        <span id="footer-title">Carver</span>
+        <span id="footer-tagline">Minimal by design, private by default.</span>
+      </div>
+      <button id="settings-btn" aria-label="Open settings" aria-haspopup="dialog">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </footer>
+
+    <!-- Settings modal -->
+    <div id="settings-overlay" role="presentation" hidden></div>
+    <div id="settings-modal" role="dialog" aria-modal="true" aria-label="Settings" aria-labelledby="settings-title" hidden>
+      <div id="settings-header">
+        <h2 id="settings-title">Settings</h2>
+        <button id="settings-close" aria-label="Close settings">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div id="settings-body">
+        <label class="setting-row">
+          <span class="setting-label">Editor theme</span>
+          <select id="setting-editor-theme">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </label>
+        <label class="setting-row">
+          <span class="setting-label">Editor caret</span>
+          <select id="setting-caret">
+            <option value="line">Line</option>
+            <option value="block">Block</option>
+            <option value="underscore">Underscore</option>
+          </select>
+        </label>
+        <label class="setting-row">
+          <span class="setting-label">Preview theme</span>
+          <select id="setting-preview-theme">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+          </select>
+        </label>
+        <label class="setting-row">
+          <span class="setting-label">Preview font</span>
+          <select id="setting-preview-font">
+            <option value="sans">Sans-serif</option>
+            <option value="serif">Serif</option>
+          </select>
+        </label>
+        <label class="setting-row">
+          <span class="setting-label">Tint</span>
+          <select id="setting-tint">
+            <option value="cool">Cool</option>
+            <option value="warm">Warm</option>
+          </select>
+        </label>
+        <label class="setting-row">
+          <span class="setting-label">Text size</span>
+          <select id="setting-text-size">
+            <option value="small">Small</option>
+            <option value="medium" selected>Medium</option>
+            <option value="large">Large</option>
+          </select>
+        </label>
+        <label class="setting-row setting-row--checkbox">
+          <span class="setting-label">Focus mode on desktop</span>
+          <input type="checkbox" id="setting-focus-desktop" />
+        </label>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
