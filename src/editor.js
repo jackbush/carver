@@ -1,4 +1,4 @@
-import { EditorView, keymap, drawSelection } from '@codemirror/view';
+import { EditorView, keymap, drawSelection, placeholder } from '@codemirror/view';
 import { EditorState, Compartment } from '@codemirror/state';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { markdown } from '@codemirror/lang-markdown';
@@ -82,6 +82,7 @@ export function createEditor(container, content, onChange) {
         markdown(),
         highlighting,
         themeCompartment.of(initialTheme),
+        EditorView.contentAttributes.of({ 'aria-label': 'Markdown editor', 'aria-multiline': 'true' }),
         EditorView.updateListener.of(update => {
           if (update.docChanged) onChange(update.state.doc.toString());
         }),
