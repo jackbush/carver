@@ -16,25 +16,25 @@ A markdown editor that runs entirely in the browser. No accounts, no servers, no
 
 ### Desktop (800px+)
 
-Two vertical columns: editor on the left, live preview on the right. An electric blue vertical divider separates the panes.
+Two vertical columns: editor on the left, live preview on the right. A vertical divider separates the panes, using the accent colour (blue in cool tint, amber/orange in warm tint).
 
 ### Mobile (<800px)
 
-Single-column "focus mode" is forced. A floating top bar lets the user toggle between edit and preview. The edit label sits on the left, the preview label on the right, with a toggle button between them. The toggle uses the same electric blue as other page controls.
+Single-column "focus mode" is forced. A floating top bar lets the user toggle between edit and preview. The edit label sits on the left, the preview label on the right, with a toggle button between them. The toggle uses the accent colour.
 
 ### Editor Pane
 
 - IBM Plex Mono, 16px base
 - No line numbers, text wraps naturally
-- Blue caret (slightly more neutral than text colour), defaulting to line style
-- Selection highlight is blue, slightly more neutral than the background
+- Accent-coloured caret (slightly more neutral than text colour), defaulting to line style
+- Selection highlight uses the accent colour, slightly more neutral than the background
 - Markdown syntax characters that don't appear in rendered output (`#`, `**`, `_`, `[]()` markup, etc.) are dimmed via reduced opacity — keeps focus on content while showing structure
 - Headings (lines starting with `#`) are styled bold
 
 ### Preview Pane
 
 - IBM Plex Sans (pairs with the editor's Plex Mono)
-- Same blue-tinted colour scheme with more typographic nuance (primary and secondary text colours for headings vs body)
+- Same accent-tinted colour scheme with more typographic nuance (primary and secondary text colours for headings vs body)
 - Live-updates instantly as the user types
 
 ### Footer
@@ -54,7 +54,7 @@ Opened via the footer settings button. All settings persist to localStorage.
 | Editor caret | Dropdown | Line / Block / Chevron / Underscore |
 | Preview theme | Dropdown | Dark / Light |
 | Preview font | Dropdown | Serif / Sans-serif |
-| Tint | Dropdown | Cool (blue) / Warm (amber/orange — clean and energising, not dull sepia) |
+| Tint | Dropdown | Cool (blue) / Warm (amber/orange — clean and energising, not dull sepia). This is the global accent colour — it tints everything: caret, selection, divider, toggle, controls |
 | Text size | Dropdown | Small (14px base) / Medium (16px base) / Large (18px base) |
 | Focus mode on desktop | Checkbox | Forces single-column mobile layout on desktop |
 
