@@ -1,5 +1,5 @@
-# Markdown editor
-Lightweight, privacy-first .md file editor with live preview and error highlighting.
+# Carver
+A markdown editor. Minimal by design, private by default. 
 
 ## Layout
 - Desktop-first layout with two vertical columns: left side for MD editing (monospace font) and right side for live preview.
