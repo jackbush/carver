@@ -118,11 +118,33 @@
                         />
                     </svg>
                 </button>
-                <button id="help-btn" aria-label="Markdown reference" aria-haspopup="dialog">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M10 9.5c0-1.1.9-2 2-2s2 .9 2 2c0 1.5-2 2-2 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="12" cy="16.5" r="1" fill="currentColor"/>
+                <button
+                    id="help-btn"
+                    aria-label="Markdown reference"
+                    aria-haspopup="dialog"
+                >
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="9"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                        />
+                        <path
+                            d="M10 9.5c0-1.1.9-2 2-2s2 .9 2 2c0 1.5-2 2-2 3.5"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <circle cx="12" cy="16.5" r="1" fill="currentColor" />
                     </svg>
                 </button>
                 <button
@@ -311,33 +333,102 @@
         </div>
 
         <!-- Help modal -->
-        <div id="help-overlay" class="modal-overlay" role="presentation" hidden></div>
-        <div id="help-modal" class="modal-panel modal-panel--help" role="dialog" aria-modal="true" aria-labelledby="help-title" hidden>
+        <div
+            id="help-overlay"
+            class="modal-overlay"
+            role="presentation"
+            hidden
+        ></div>
+        <div
+            id="help-modal"
+            class="modal-panel modal-panel--help"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="help-title"
+            hidden
+        >
             <div class="modal-header">
-                <h2 id="help-title" class="modal-title">Markdown</h2>
-                <button id="help-close" class="modal-close" aria-label="Close reference">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                        <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <h2 id="help-title" class="modal-title">Guide</h2>
+                <button
+                    id="help-close"
+                    class="modal-close"
+                    aria-label="Close reference"
+                >
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M2 2l12 12M14 2L2 14"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                        />
                     </svg>
                 </button>
             </div>
             <div id="help-body">
                 <table class="syntax-table">
                     <tbody>
-                        <tr><td class="syntax-cell"># Cathedral</td><td class="syntax-desc">Heading 1</td></tr>
-                        <tr><td class="syntax-cell">## Furious Seasons</td><td class="syntax-desc">Heading 2</td></tr>
-                        <tr><td class="syntax-cell">### A Small Good Thing</td><td class="syntax-desc">Heading 3</td></tr>
-                        <tr><td class="syntax-cell">**Winter Insomnia**</td><td class="syntax-desc">Bold</td></tr>
-                        <tr><td class="syntax-cell">*The Calm*</td><td class="syntax-desc">Italic</td></tr>
-                        <tr><td class="syntax-cell">~~Viewfinder~~</td><td class="syntax-desc">Strikethrough</td></tr>
-                        <tr><td class="syntax-cell">`Neighbors`</td><td class="syntax-desc">Inline code</td></tr>
-                        <tr><td class="syntax-cell">> Fat</td><td class="syntax-desc">Blockquote</td></tr>
-                        <tr><td class="syntax-cell">- Cathedral</td><td class="syntax-desc">Bullet list</td></tr>
-                        <tr><td class="syntax-cell">1. Cathedral</td><td class="syntax-desc">Numbered list</td></tr>
-                        <tr><td class="syntax-cell">[The Calm](url)</td><td class="syntax-desc">Link</td></tr>
-                        <tr><td class="syntax-cell">![alt](img.jpg)</td><td class="syntax-desc">Image</td></tr>
-                        <tr><td class="syntax-cell">```code```</td><td class="syntax-desc">Code block</td></tr>
-                        <tr><td class="syntax-cell">---</td><td class="syntax-desc">Divider</td></tr>
+                        <tr>
+                            <td class="syntax-cell"># Cathedral</td>
+                            <td class="syntax-desc">Heading 1</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">## Furious Seasons</td>
+                            <td class="syntax-desc">Heading 2</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">### A Small Good Thing</td>
+                            <td class="syntax-desc">Heading 3</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">**Winter Insomnia**</td>
+                            <td class="syntax-desc">Bold</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">*The Calm*</td>
+                            <td class="syntax-desc">Italic</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">~~Viewfinder~~</td>
+                            <td class="syntax-desc">Strikethrough</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">`Neighbors`</td>
+                            <td class="syntax-desc">Inline code</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">> Fat</td>
+                            <td class="syntax-desc">Blockquote</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">- Cathedral</td>
+                            <td class="syntax-desc">Bullet list</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">1. Cathedral</td>
+                            <td class="syntax-desc">Numbered list</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">[The Calm](url)</td>
+                            <td class="syntax-desc">Link</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">![alt](img.jpg)</td>
+                            <td class="syntax-desc">Image</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">```code```</td>
+                            <td class="syntax-desc">Code block</td>
+                        </tr>
+                        <tr>
+                            <td class="syntax-cell">---</td>
+                            <td class="syntax-desc">Divider</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
