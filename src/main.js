@@ -194,6 +194,27 @@ document.getElementById('setting-focus-desktop').addEventListener('change', e =>
 document.getElementById('setting-match-scroll').addEventListener('change', e =>
   onSettingChange('matchScroll', e.target.checked));
 
+// ── Upload ───────────────────────────────────────────────
+const uploadInput = document.getElementById('upload-input');
+
+document.getElementById('upload-btn').addEventListener('click', () => uploadInput.click());
+
+uploadInput.addEventListener('change', () => {
+  const file = uploadInput.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const content = e.target.result;
+    editor.view.dispatch({
+      changes: { from: 0, to: editor.view.state.doc.length, insert: content },
+    });
+    renderPreview(content);
+    scheduleContentSave(content);
+  };
+  reader.readAsText(file);
+  uploadInput.value = '';
+});
+
 // ── Download modal ───────────────────────────────────────
 function openDownload() {
   const content = editor.view.state.doc.toString();
