@@ -53,6 +53,38 @@ const editor = createEditor(
   }
 );
 
+// ── Synchronized scrolling ───────────────────────────────
+let syncLock = null; // 'editor' | 'preview' | null
+let syncLockTimer = null;
+
+function acquireLock(source) {
+  if (syncLock && syncLock !== source) return false;
+  syncLock = source;
+  clearTimeout(syncLockTimer);
+  syncLockTimer = setTimeout(() => { syncLock = null; }, 400);
+  return true;
+}
+
+function scrollFraction(el) {
+  const max = el.scrollHeight - el.clientHeight;
+  return max > 0 ? el.scrollTop / max : 0;
+}
+
+function applyFraction(el, fraction) {
+  const max = el.scrollHeight - el.clientHeight;
+  el.scrollTo({ top: fraction * max, behavior: 'smooth' });
+}
+
+editor.view.scrollDOM.addEventListener('scroll', () => {
+  if (!settings.matchScroll || !acquireLock('editor')) return;
+  applyFraction(previewEl, scrollFraction(editor.view.scrollDOM));
+});
+
+previewEl.addEventListener('scroll', () => {
+  if (!settings.matchScroll || !acquireLock('preview')) return;
+  applyFraction(editor.view.scrollDOM, scrollFraction(previewEl));
+});
+
 // ── Apply initial settings ───────────────────────────────
 applySettings(settings);
 syncSettingsUI(settings);
@@ -158,6 +190,9 @@ document.getElementById('setting-text-size').addEventListener('change', e =>
 
 document.getElementById('setting-focus-desktop').addEventListener('change', e =>
   onSettingChange('focusDesktop', e.target.checked));
+
+document.getElementById('setting-match-scroll').addEventListener('change', e =>
+  onSettingChange('matchScroll', e.target.checked));
 
 // ── Download modal ───────────────────────────────────────
 function openDownload() {

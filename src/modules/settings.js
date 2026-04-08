@@ -8,6 +8,7 @@ const DEFAULTS = {
   tint: 'cool',
   textSize: 'medium',
   focusDesktop: false,
+  matchScroll: true,
 };
 
 const TEXT_SIZE_MAP = { small: '14px', medium: '16px', large: '18px' };
@@ -59,4 +60,5 @@ export function syncSettingsUI(settings) {
   document.getElementById('setting-tint').value = settings.tint;
   document.getElementById('setting-text-size').value = settings.textSize;
   document.getElementById('setting-focus-desktop').checked = settings.focusDesktop;
+  document.getElementById('setting-match-scroll').checked = settings.matchScroll;
 }
