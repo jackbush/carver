@@ -1,6 +1,5 @@
 import './style.css';
 import markdownit from 'markdown-it';
-import { DEMO_CONTENT } from './modules/demo.js';
 import { loadSettings, saveSettings, applySettings, syncSettingsUI } from './modules/settings.js';
 import { createEditor, updateEditorSettings } from './modules/editor.js';
 import { getDefaultFilename, triggerDownload } from './modules/download.js';
@@ -29,10 +28,6 @@ function renderPreview(content) {
 }
 
 // ── Document persistence ─────────────────────────────────
-function getInitialContent() {
-  return localStorage.getItem(CONTENT_KEY) ?? DEMO_CONTENT;
-}
-
 function scheduleContentSave(content) {
   clearTimeout(saveTimeout);
   saveTimeout = setTimeout(() => {
@@ -40,8 +35,19 @@ function scheduleContentSave(content) {
   }, 300);
 }
 
+async function getInitialContent() {
+  const saved = localStorage.getItem(CONTENT_KEY);
+  if (saved !== null) return saved;
+  try {
+    const res = await fetch(import.meta.env.BASE_URL + 'demo.md');
+    return await res.text();
+  } catch {
+    return '';
+  }
+}
+
 // ── Editor setup ─────────────────────────────────────────
-const initialContent = getInitialContent();
+const initialContent = await getInitialContent();
 renderPreview(initialContent);
 
 const editor = createEditor(

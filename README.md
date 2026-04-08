@@ -23,6 +23,7 @@ Everything — your document and all settings — is saved to localStorage. Noth
 | Tint | Cool (blue) / Warm (amber/orange) — applies globally to caret, divider, toggle, controls |
 | Text size | Small (14px) / Medium (16px) / Large (18px) |
 | Focus mode on desktop | Forces single-column layout |
+| Match scroll positions | Aligns top of both panes |
 
 Settings and document content persist to localStorage. On first load, themes default to the browser's light/dark preference.
 
