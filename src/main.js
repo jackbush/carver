@@ -39,7 +39,7 @@ function scheduleContentSave(content) {
 
 async function getInitialContent() {
   const saved = localStorage.getItem(CONTENT_KEY);
-  if (saved !== null) return saved;
+  if (saved !== null && saved.trim() !== '') return saved;
   try {
     const res = await fetch(import.meta.env.BASE_URL + 'demo.md');
     return await res.text();
