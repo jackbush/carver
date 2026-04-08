@@ -56,7 +56,7 @@ Three buttons, bottom right. That's the whole thing.
 
 **Download** — the arrow pointing down. Saves what's here to a `.md` file. Give it a name, or keep the one it guesses from your first line.
 
-**Settings** — the gear. Editor theme, preview theme, font size, tint, caret style. Changes take effect immediately. Your choices are remembered.
+**Settings** — the gear. Editing theme, reading theme, font size, tint, caret style. Changes take effect immediately. Your choices are remembered.
 
 ---
 

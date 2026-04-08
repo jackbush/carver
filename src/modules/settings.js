@@ -44,12 +44,6 @@ export function applySettings(settings) {
   root.setAttribute('data-tint', settings.tint);
   root.setAttribute('data-preview-font', settings.previewFont);
   root.style.setProperty('--base-size', TEXT_SIZE_MAP[settings.textSize] || '16px');
-
-  if (settings.focusDesktop || window.innerWidth < 800) {
-    document.body.classList.add('focus-mode');
-  } else {
-    document.body.classList.remove('focus-mode');
-  }
 }
 
 export function syncSettingsUI(settings) {

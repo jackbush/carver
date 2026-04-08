@@ -75,7 +75,6 @@
   --editor-bg: hsl(220, 16%, 10%);
   --editor-text: hsl(220, 10%, 80%);
   --editor-syntax-dim: hsl(220, 8%, 42%);   /* ~3:1 — subtle but legible */
-  --editor-tagline: hsl(220, 8%, 56%);   /* ≥4.5:1 on dark bg */
   --editor-selection-bg: hsl(var(--accent-h), 45%, 22%);
   --editor-caret: var(--accent);
 }
@@ -83,7 +82,6 @@
   --editor-bg: hsl(220, 22%, 97%);
   --editor-text: hsl(220, 18%, 16%);
   --editor-syntax-dim: hsl(220, 8%, 56%);   /* ~3:1 — subtle but legible */
-  --editor-tagline: hsl(220, 8%, 38%);   /* ≥4.5:1 on light bg */
   --editor-selection-bg: hsl(var(--accent-h), 55%, 87%);
   --editor-caret: var(--accent);
 }
