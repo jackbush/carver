@@ -19,6 +19,8 @@ const settingsOverlay = document.getElementById('settings-overlay');
 const settingsModal = document.getElementById('settings-modal');
 const downloadOverlay = document.getElementById('download-overlay');
 const downloadModal = document.getElementById('download-modal');
+const helpOverlay = document.getElementById('help-overlay');
+const helpModal = document.getElementById('help-modal');
 const labelEdit = document.getElementById('label-edit');
 const labelRead = document.getElementById('label-read');
 
@@ -261,4 +263,26 @@ downloadModal.addEventListener('keydown', (e) => {
     return;
   }
   if (e.key === 'Tab') trapFocus(downloadModal, e);
+});
+
+// ── Help modal ───────────────────────────────────────────
+function openHelp() {
+  helpOverlay.removeAttribute('hidden');
+  helpModal.removeAttribute('hidden');
+  document.getElementById('help-close').focus();
+}
+
+function closeHelp() {
+  helpOverlay.setAttribute('hidden', '');
+  helpModal.setAttribute('hidden', '');
+  document.getElementById('help-btn').focus();
+}
+
+document.getElementById('help-btn').addEventListener('click', openHelp);
+document.getElementById('help-close').addEventListener('click', closeHelp);
+helpOverlay.addEventListener('click', closeHelp);
+
+helpModal.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { closeHelp(); return; }
+  if (e.key === 'Tab') trapFocus(helpModal, e);
 });
