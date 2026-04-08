@@ -120,6 +120,7 @@ html, body {
   font-size: var(--base-size);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: hsl(220, 16%, 10%);
 }
 
 body {
@@ -331,8 +332,8 @@ body.focus-mode #preview-pane {
 
 body.focus-mode #editor-pane { display: flex; }
 body.focus-mode #preview-pane { display: none; }
-body.focus-mode.show-preview #editor-pane { display: none; }
-body.focus-mode.show-preview #preview-pane { display: flex; }
+body.focus-mode.show-read #editor-pane { display: none; }
+body.focus-mode.show-read #preview-pane { display: flex; }
 
 /* ── Footer ──────────────────────────────────────────────── */
 #footer {
@@ -588,9 +589,9 @@ body.focus-mode.show-preview #preview-pane { display: flex; }
     padding-left: 1.25rem;
     padding-right: 1.25rem;
   }
-  body.focus-mode .cm-content {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+  body.focus-mode .cm-scroller {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
   }
 
   /* Position modals at top so they stay visible above soft keyboard */

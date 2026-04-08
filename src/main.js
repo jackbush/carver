@@ -11,7 +11,7 @@ const md = markdownit({ linkify: true, typographer: true });
 const CONTENT_KEY = 'carver-content';
 let settings = loadSettings();
 let saveTimeout = null;
-let focusView = 'editor'; // 'editor' | 'preview'
+let focusView = 'editor'; // 'editor' | 'read'
 
 // ── DOM refs ─────────────────────────────────────────────
 const previewEl = document.getElementById('preview');
@@ -20,7 +20,7 @@ const settingsModal = document.getElementById('settings-modal');
 const downloadOverlay = document.getElementById('download-overlay');
 const downloadModal = document.getElementById('download-modal');
 const labelEdit = document.getElementById('label-edit');
-const labelPreview = document.getElementById('label-preview');
+const labelRead = document.getElementById('label-read');
 
 // ── Preview rendering ────────────────────────────────────
 function renderPreview(content) {
@@ -102,7 +102,7 @@ function applyFocusMode() {
     document.body.classList.add('focus-mode');
   } else {
     document.body.classList.remove('focus-mode');
-    document.body.classList.remove('show-preview');
+    document.body.classList.remove('show-read');
     focusView = 'editor';
   }
   updateFocusLabels();
@@ -110,20 +110,20 @@ function applyFocusMode() {
 
 function updateFocusLabels() {
   labelEdit.classList.toggle('active', focusView === 'editor');
-  labelPreview.classList.toggle('active', focusView === 'preview');
+  labelRead.classList.toggle('active', focusView === 'read');
 }
 
 function switchFocusView(view) {
   focusView = view;
-  document.body.classList.toggle('show-preview', focusView === 'preview');
+  document.body.classList.toggle('show-read', focusView === 'read');
   updateFocusLabels();
 }
 
 document.getElementById('focus-toggle').addEventListener('click', () =>
-  switchFocusView(focusView === 'editor' ? 'preview' : 'editor'));
+  switchFocusView(focusView === 'editor' ? 'read' : 'editor'));
 
 document.getElementById('label-edit').addEventListener('click', () => switchFocusView('editor'));
-document.getElementById('label-preview').addEventListener('click', () => switchFocusView('preview'));
+document.getElementById('label-read').addEventListener('click', () => switchFocusView('read'));
 
 let resizeTimer = null;
 window.addEventListener('resize', () => {

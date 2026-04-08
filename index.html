@@ -1,158 +1,308 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="hsl(220, 16%, 10%)" />
-    <title>Carver</title>
-    <link rel="stylesheet" href="/src/style.css" />
-  </head>
-  <body>
-    <div id="app">
-      <div id="editor-pane" role="region" aria-label="Markdown editor">
-        <div id="editor"></div>
-      </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="hsl(220, 16%, 10%)" />
+        <title>Carver</title>
+        <link rel="stylesheet" href="/src/style.css" />
+    </head>
+    <body>
+        <div id="app">
+            <div id="editor-pane" role="region" aria-label="Markdown editor">
+                <div id="editor"></div>
+            </div>
 
-      <div id="divider" aria-hidden="true"></div>
+            <div id="divider" aria-hidden="true"></div>
 
-      <div id="preview-pane" role="region" aria-label="Rendered preview">
-        <div id="preview"></div>
-      </div>
+            <div id="preview-pane" role="region" aria-label="Rendered preview">
+                <div id="preview"></div>
+            </div>
 
-      <!-- Mobile / focus mode top bar -->
-      <div id="focus-bar" aria-label="View toggle">
-        <button class="focus-label" id="label-edit" aria-label="Show editor">Edit</button>
-        <button id="focus-toggle" aria-label="Switch between edit and preview">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M7 5l-5 5 5 5M13 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="focus-label" id="label-preview" aria-label="Show preview">Preview</button>
-      </div>
-    </div>
-
-    <!-- Footer -->
-    <footer id="footer">
-      <div id="footer-brand">
-        <span id="footer-title">Carver</span>
-        <span id="footer-tagline">Minimal by design, private by default.</span>
-      </div>
-      <div id="footer-actions">
-        <input type="file" id="upload-input" accept=".md" hidden />
-        <button id="upload-btn" aria-label="Upload markdown file">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 21V8M7 13l5-5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M5 4h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </button>
-        <button id="download-btn" aria-label="Download document" aria-haspopup="dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M5 20h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </button>
-        <button id="settings-btn" aria-label="Open settings" aria-haspopup="dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </footer>
-
-    <!-- Settings modal -->
-    <div id="settings-overlay" class="modal-overlay" role="presentation" hidden></div>
-    <div id="settings-modal" class="modal-panel" role="dialog" aria-modal="true" aria-label="Settings" aria-labelledby="settings-title" hidden>
-      <div id="settings-header" class="modal-header">
-        <h2 id="settings-title" class="modal-title">Settings</h2>
-        <button id="settings-close" class="modal-close" aria-label="Close settings">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-      <div id="settings-body">
-        <label class="setting-row">
-          <span class="setting-label">Editor theme</span>
-          <select id="setting-editor-theme">
-            <option value="dark">Dark</option>
-            <option value="light">Light</option>
-          </select>
-        </label>
-        <label class="setting-row">
-          <span class="setting-label">Editor caret</span>
-          <select id="setting-caret">
-            <option value="line">Line</option>
-            <option value="block">Block</option>
-            <option value="underscore">Underscore</option>
-          </select>
-        </label>
-        <label class="setting-row">
-          <span class="setting-label">Preview theme</span>
-          <select id="setting-preview-theme">
-            <option value="dark">Dark</option>
-            <option value="light">Light</option>
-          </select>
-        </label>
-        <label class="setting-row">
-          <span class="setting-label">Preview font</span>
-          <select id="setting-preview-font">
-            <option value="sans">Sans-serif</option>
-            <option value="serif">Serif</option>
-          </select>
-        </label>
-        <label class="setting-row">
-          <span class="setting-label">Tint</span>
-          <select id="setting-tint">
-            <option value="cool">Cool</option>
-            <option value="warm">Warm</option>
-          </select>
-        </label>
-        <label class="setting-row">
-          <span class="setting-label">Text size</span>
-          <select id="setting-text-size">
-            <option value="small">Small</option>
-            <option value="medium" selected>Medium</option>
-            <option value="large">Large</option>
-          </select>
-        </label>
-        <label class="setting-row setting-row--checkbox">
-          <span class="setting-label">Focus mode on desktop</span>
-          <input type="checkbox" id="setting-focus-desktop" />
-        </label>
-        <label class="setting-row setting-row--checkbox">
-          <span class="setting-label">Match scroll positions</span>
-          <input type="checkbox" id="setting-match-scroll" />
-        </label>
-      </div>
-    </div>
-
-    <!-- Download modal -->
-    <div id="download-overlay" class="modal-overlay" role="presentation" hidden></div>
-    <div id="download-modal" class="modal-panel" role="dialog" aria-modal="true" aria-label="Download document" aria-labelledby="download-title" hidden>
-      <div id="download-header" class="modal-header">
-        <h2 id="download-title" class="modal-title">Download</h2>
-        <button id="download-close" class="modal-close" aria-label="Close download dialog">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-      <div id="download-body">
-        <label class="setting-row" for="download-filename">
-          <span class="setting-label">Filename</span>
-          <div class="filename-input-group">
-            <input type="text" id="download-filename" autocomplete="off" spellcheck="false" />
-            <span class="filename-ext">.md</span>
-          </div>
-        </label>
-        <div id="download-actions">
-          <button id="download-cancel">Cancel</button>
-          <button id="download-confirm">Download</button>
+            <!-- Mobile / focus mode top bar -->
+            <div id="focus-bar" aria-label="View toggle">
+                <button
+                    class="focus-label"
+                    id="label-edit"
+                    aria-label="Show editor"
+                >
+                    Edit
+                </button>
+                <button
+                    id="focus-toggle"
+                    aria-label="Switch between edit and read"
+                >
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M7 5l-5 5 5 5M13 5l5 5-5 5"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                </button>
+                <button
+                    class="focus-label"
+                    id="label-read"
+                    aria-label="Show read view"
+                >
+                    Read
+                </button>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <script type="module" src="/src/main.js"></script>
-  </body>
+        <!-- Footer -->
+        <footer id="footer">
+            <div id="footer-brand">
+                <span id="footer-title">Carver</span>
+                <span id="footer-tagline"
+                    >Minimal by design, private by default.</span
+                >
+            </div>
+            <div id="footer-actions">
+                <input type="file" id="upload-input" accept=".md" hidden />
+                <button id="upload-btn" aria-label="Upload markdown file">
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M12 21V8M7 13l5-5 5 5"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <path
+                            d="M5 4h14"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                        />
+                    </svg>
+                </button>
+                <button
+                    id="download-btn"
+                    aria-label="Download document"
+                    aria-haspopup="dialog"
+                >
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M12 3v13M7 11l5 5 5-5"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                        <path
+                            d="M5 20h14"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                        />
+                    </svg>
+                </button>
+                <button
+                    id="settings-btn"
+                    aria-label="Open settings"
+                    aria-haspopup="dialog"
+                >
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="3"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                        />
+                        <path
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                </button>
+            </div>
+        </footer>
+
+        <!-- Settings modal -->
+        <div
+            id="settings-overlay"
+            class="modal-overlay"
+            role="presentation"
+            hidden
+        ></div>
+        <div
+            id="settings-modal"
+            class="modal-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Settings"
+            aria-labelledby="settings-title"
+            hidden
+        >
+            <div id="settings-header" class="modal-header">
+                <h2 id="settings-title" class="modal-title">Settings</h2>
+                <button
+                    id="settings-close"
+                    class="modal-close"
+                    aria-label="Close settings"
+                >
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M2 2l12 12M14 2L2 14"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                        />
+                    </svg>
+                </button>
+            </div>
+            <div id="settings-body">
+                <label class="setting-row">
+                    <span class="setting-label">Editing theme</span>
+                    <select id="setting-editor-theme">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                    </select>
+                </label>
+                <label class="setting-row">
+                    <span class="setting-label">Editing caret</span>
+                    <select id="setting-caret">
+                        <option value="line">Line</option>
+                        <option value="block">Block</option>
+                        <option value="underscore">Underscore</option>
+                    </select>
+                </label>
+                <label class="setting-row">
+                    <span class="setting-label">Reading theme</span>
+                    <select id="setting-preview-theme">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                    </select>
+                </label>
+                <label class="setting-row">
+                    <span class="setting-label">Reading font</span>
+                    <select id="setting-preview-font">
+                        <option value="sans">Sans-serif</option>
+                        <option value="serif">Serif</option>
+                    </select>
+                </label>
+                <label class="setting-row">
+                    <span class="setting-label">Tint</span>
+                    <select id="setting-tint">
+                        <option value="cool">Cool</option>
+                        <option value="warm">Warm</option>
+                    </select>
+                </label>
+                <label class="setting-row">
+                    <span class="setting-label">Text size</span>
+                    <select id="setting-text-size">
+                        <option value="small">Small</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </label>
+                <label class="setting-row setting-row--checkbox">
+                    <span class="setting-label">Focus mode on desktop</span>
+                    <input type="checkbox" id="setting-focus-desktop" />
+                </label>
+                <label class="setting-row setting-row--checkbox">
+                    <span class="setting-label">Match scroll positions</span>
+                    <input type="checkbox" id="setting-match-scroll" />
+                </label>
+            </div>
+        </div>
+
+        <!-- Download modal -->
+        <div
+            id="download-overlay"
+            class="modal-overlay"
+            role="presentation"
+            hidden
+        ></div>
+        <div
+            id="download-modal"
+            class="modal-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Download document"
+            aria-labelledby="download-title"
+            hidden
+        >
+            <div id="download-header" class="modal-header">
+                <h2 id="download-title" class="modal-title">Download</h2>
+                <button
+                    id="download-close"
+                    class="modal-close"
+                    aria-label="Close download dialog"
+                >
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M2 2l12 12M14 2L2 14"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                        />
+                    </svg>
+                </button>
+            </div>
+            <div id="download-body">
+                <label class="setting-row" for="download-filename">
+                    <span class="setting-label">Filename</span>
+                    <div class="filename-input-group">
+                        <input
+                            type="text"
+                            id="download-filename"
+                            autocomplete="off"
+                            spellcheck="false"
+                        />
+                        <span class="filename-ext">.md</span>
+                    </div>
+                </label>
+                <div id="download-actions">
+                    <button id="download-cancel">Cancel</button>
+                    <button id="download-confirm">Download</button>
+                </div>
+            </div>
+        </div>
+
+        <script type="module" src="/src/main.js"></script>
+    </body>
 </html>
