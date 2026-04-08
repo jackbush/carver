@@ -1,11 +1,9 @@
-import { EditorView, keymap, drawSelection, placeholder } from '@codemirror/view';
+import { EditorView, keymap, drawSelection } from '@codemirror/view';
 import { EditorState, Compartment } from '@codemirror/state';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { markdown } from '@codemirror/lang-markdown';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { tags } from '@lezer/highlight';
-
-const themeCompartment = new Compartment();
 
 function buildTheme(caret, isDark) {
   const caretStyle = {};
@@ -69,6 +67,7 @@ const highlighting = syntaxHighlighting(HighlightStyle.define([
 ]));
 
 export function createEditor(container, content, onChange) {
+  const themeCompartment = new Compartment();
   const initialTheme = buildTheme('line', true);
 
   const view = new EditorView({
@@ -91,10 +90,10 @@ export function createEditor(container, content, onChange) {
     parent: container,
   });
 
-  return view;
+  return { view, themeCompartment };
 }
 
-export function updateEditorSettings(view, settings) {
+export function updateEditorSettings({ view, themeCompartment }, settings) {
   const isDark = settings.editorTheme === 'dark';
   const newTheme = buildTheme(settings.caret, isDark);
   view.dispatch({

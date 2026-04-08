@@ -47,3 +47,4 @@ Deployed to [jackbush.github.io/carver](https://jackbush.github.io/carver) via G
 ## Future Additions
 
 - **Multi-file management**: A sidebar or file switcher allowing users to create, name, and switch between multiple documents, all stored in localStorage.
+- **E2E coverage for download**: Playwright tests for the download modal (open, filename editing, confirm, cancel) — deferred until Playwright browser install.

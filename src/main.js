@@ -20,7 +20,6 @@ const settingsOverlay = document.getElementById('settings-overlay');
 const settingsModal = document.getElementById('settings-modal');
 const downloadOverlay = document.getElementById('download-overlay');
 const downloadModal = document.getElementById('download-modal');
-const focusBar = document.getElementById('focus-bar');
 const labelEdit = document.getElementById('label-edit');
 const labelPreview = document.getElementById('label-preview');
 
@@ -45,7 +44,7 @@ function scheduleContentSave(content) {
 const initialContent = getInitialContent();
 renderPreview(initialContent);
 
-const editorView = createEditor(
+const editor = createEditor(
   document.getElementById('editor'),
   initialContent,
   (content) => {
@@ -57,7 +56,7 @@ const editorView = createEditor(
 // ── Apply initial settings ───────────────────────────────
 applySettings(settings);
 syncSettingsUI(settings);
-updateEditorSettings(editorView, settings);
+updateEditorSettings(editor, settings);
 
 // ── Mobile / focus mode ──────────────────────────────────
 function applyFocusMode() {
@@ -88,8 +87,24 @@ document.getElementById('focus-toggle').addEventListener('click', () =>
 document.getElementById('label-edit').addEventListener('click', () => switchFocusView('editor'));
 document.getElementById('label-preview').addEventListener('click', () => switchFocusView('preview'));
 
-window.addEventListener('resize', applyFocusMode);
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(applyFocusMode, 100);
+});
 applyFocusMode();
+
+// ── Focus trap helper ────────────────────────────────────
+function trapFocus(modal, e) {
+  const focusable = [...modal.querySelectorAll('select, input, button')];
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault(); last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault(); first.focus();
+  }
+}
 
 // ── Settings modal ───────────────────────────────────────
 function openSettings() {
@@ -111,15 +126,7 @@ settingsOverlay.addEventListener('click', closeSettings);
 // Focus trap inside settings modal
 settingsModal.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') { closeSettings(); return; }
-  if (e.key !== 'Tab') return;
-  const focusable = [...settingsModal.querySelectorAll('select, input, button')];
-  const first = focusable[0];
-  const last = focusable[focusable.length - 1];
-  if (e.shiftKey && document.activeElement === first) {
-    e.preventDefault(); last.focus();
-  } else if (!e.shiftKey && document.activeElement === last) {
-    e.preventDefault(); first.focus();
-  }
+  if (e.key === 'Tab') trapFocus(settingsModal, e);
 });
 
 // ── Settings change handlers ─────────────────────────────
@@ -127,7 +134,7 @@ function onSettingChange(key, value) {
   settings[key] = value;
   saveSettings(settings);
   applySettings(settings);
-  updateEditorSettings(editorView, settings);
+  updateEditorSettings(editor, settings);
   applyFocusMode();
 }
 
@@ -154,7 +161,7 @@ document.getElementById('setting-focus-desktop').addEventListener('change', e =>
 
 // ── Download modal ───────────────────────────────────────
 function openDownload() {
-  const content = editorView.state.doc.toString();
+  const content = editor.view.state.doc.toString();
   const defaultName = getDefaultFilename(content);
   const input = document.getElementById('download-filename');
   input.value = defaultName;
@@ -172,7 +179,7 @@ function closeDownload() {
 
 function confirmDownload() {
   const filename = document.getElementById('download-filename').value.trim() || 'document';
-  const content = editorView.state.doc.toString();
+  const content = editor.view.state.doc.toString();
   triggerDownload(filename, content);
   closeDownload();
 }
@@ -191,13 +198,5 @@ downloadModal.addEventListener('keydown', (e) => {
     confirmDownload();
     return;
   }
-  if (e.key !== 'Tab') return;
-  const focusable = [...downloadModal.querySelectorAll('input, button')];
-  const first = focusable[0];
-  const last = focusable[focusable.length - 1];
-  if (e.shiftKey && document.activeElement === first) {
-    e.preventDefault(); last.focus();
-  } else if (!e.shiftKey && document.activeElement === last) {
-    e.preventDefault(); first.focus();
-  }
+  if (e.key === 'Tab') trapFocus(downloadModal, e);
 });
