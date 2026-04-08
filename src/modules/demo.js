@@ -8,6 +8,7 @@ A few things you should know:
 - We believe in privacy: nobody else knows what you type in here
 - Closing the tab won't lose your work, but clearing the browser will
 - Settings live in the bottom-right corner
+- When you're ready, download your document as a Markdown file — the download button is next to settings
 
 ---
 

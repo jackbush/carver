@@ -362,23 +362,29 @@ body.focus-mode.show-preview #preview-pane { display: flex; }
   color: var(--editor-tagline);
 }
 
-#settings-btn {
+#footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+#footer-actions button {
   background: none;
   border: none;
-  color: var(--editor-text);
+  color: var(--accent);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 6px;
   border-radius: 4px;
-  opacity: 0.55;
-  transition: opacity 0.15s, color 0.15s;
+  opacity: 0.8;
+  transition: opacity 0.15s;
 }
 
-#settings-btn:hover { opacity: 1; color: var(--accent); }
+#footer-actions button:hover { opacity: 1; }
 
-#settings-btn:focus-visible {
+#footer-actions button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   opacity: 1;
@@ -485,6 +491,145 @@ body.focus-mode.show-preview #preview-pane { display: flex; }
   accent-color: var(--accent);
   cursor: pointer;
   flex-shrink: 0;
+}
+
+/* ── Download modal ─────────────────────────────────────── */
+#download-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 200;
+}
+
+#download-modal {
+  position: fixed;
+  bottom: 52px;
+  right: 1rem;
+  width: 320px;
+  background: var(--editor-bg);
+  border: 1px solid var(--accent-divider);
+  border-radius: 8px;
+  z-index: 201;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+}
+
+#download-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  border-bottom: 2px solid var(--accent-divider);
+}
+
+#download-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--editor-text);
+}
+
+#download-close {
+  background: none;
+  border: none;
+  color: var(--editor-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+
+#download-close:hover { opacity: 1; }
+
+#download-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+#download-body { padding: 0.4rem 0 0; }
+
+.filename-input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--accent-divider);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.filename-input-group input {
+  background: var(--editor-bg);
+  border: none;
+  color: var(--editor-text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.73rem;
+  padding: 3px 4px 3px 6px;
+  outline: none;
+  min-width: 0;
+  width: 140px;
+}
+
+.filename-ext {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.73rem;
+  color: var(--editor-syntax-dim);
+  padding: 3px 6px 3px 0;
+  background: var(--editor-bg);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.filename-input-group:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+#download-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  margin-top: 0.25rem;
+  border-top: 1px solid var(--accent-divider);
+}
+
+#download-cancel,
+#download-confirm {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.73rem;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid var(--accent-divider);
+  transition: opacity 0.15s;
+}
+
+#download-cancel {
+  background: transparent;
+  color: var(--editor-text);
+  opacity: 0.7;
+}
+
+#download-cancel:hover { opacity: 1; }
+
+#download-confirm {
+  background: var(--accent);
+  color: hsl(0, 0%, 100%);
+  border-color: var(--accent);
+  opacity: 0.9;
+}
+
+#download-confirm:hover { opacity: 1; }
+
+#download-cancel:focus-visible,
+#download-confirm:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* ── Utilities ───────────────────────────────────────────── */

@@ -36,12 +36,20 @@
         <span id="footer-title">Carver</span>
         <span id="footer-tagline">Minimal by design, private by default.</span>
       </div>
-      <button id="settings-btn" aria-label="Open settings" aria-haspopup="dialog">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
+      <div id="footer-actions">
+        <button id="download-btn" aria-label="Download document" aria-haspopup="dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 20h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button id="settings-btn" aria-label="Open settings" aria-haspopup="dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
     </footer>
 
     <!-- Settings modal -->
@@ -104,6 +112,32 @@
           <span class="setting-label">Focus mode on desktop</span>
           <input type="checkbox" id="setting-focus-desktop" />
         </label>
+      </div>
+    </div>
+
+    <!-- Download modal -->
+    <div id="download-overlay" role="presentation" hidden></div>
+    <div id="download-modal" role="dialog" aria-modal="true" aria-label="Download document" aria-labelledby="download-title" hidden>
+      <div id="download-header">
+        <h2 id="download-title">Download</h2>
+        <button id="download-close" aria-label="Close download dialog">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div id="download-body">
+        <div class="setting-row">
+          <span class="setting-label">Filename</span>
+          <div class="filename-input-group">
+            <input type="text" id="download-filename" autocomplete="off" spellcheck="false" aria-label="Filename without extension" />
+            <span class="filename-ext">.md</span>
+          </div>
+        </div>
+        <div id="download-actions">
+          <button id="download-cancel">Cancel</button>
+          <button id="download-confirm">Download</button>
+        </div>
       </div>
     </div>
 

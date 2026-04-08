@@ -1,8 +1,9 @@
 import './style.css';
 import markdownit from 'markdown-it';
-import { DEMO_CONTENT } from './demo.js';
-import { loadSettings, saveSettings, applySettings, syncSettingsUI } from './settings.js';
-import { createEditor, updateEditorSettings } from './editor.js';
+import { DEMO_CONTENT } from './modules/demo.js';
+import { loadSettings, saveSettings, applySettings, syncSettingsUI } from './modules/settings.js';
+import { createEditor, updateEditorSettings } from './modules/editor.js';
+import { getDefaultFilename, triggerDownload } from './modules/download.js';
 
 // ── Markdown renderer ────────────────────────────────────
 const md = markdownit({ linkify: true, typographer: true });
@@ -17,6 +18,8 @@ let focusView = 'editor'; // 'editor' | 'preview'
 const previewEl = document.getElementById('preview');
 const settingsOverlay = document.getElementById('settings-overlay');
 const settingsModal = document.getElementById('settings-modal');
+const downloadOverlay = document.getElementById('download-overlay');
+const downloadModal = document.getElementById('download-modal');
 const focusBar = document.getElementById('focus-bar');
 const labelEdit = document.getElementById('label-edit');
 const labelPreview = document.getElementById('label-preview');
@@ -105,7 +108,7 @@ document.getElementById('settings-btn').addEventListener('click', openSettings);
 document.getElementById('settings-close').addEventListener('click', closeSettings);
 settingsOverlay.addEventListener('click', closeSettings);
 
-// Focus trap inside modal
+// Focus trap inside settings modal
 settingsModal.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') { closeSettings(); return; }
   if (e.key !== 'Tab') return;
@@ -148,3 +151,53 @@ document.getElementById('setting-text-size').addEventListener('change', e =>
 
 document.getElementById('setting-focus-desktop').addEventListener('change', e =>
   onSettingChange('focusDesktop', e.target.checked));
+
+// ── Download modal ───────────────────────────────────────
+function openDownload() {
+  const content = editorView.state.doc.toString();
+  const defaultName = getDefaultFilename(content);
+  const input = document.getElementById('download-filename');
+  input.value = defaultName;
+  downloadOverlay.removeAttribute('hidden');
+  downloadModal.removeAttribute('hidden');
+  input.focus();
+  input.select();
+}
+
+function closeDownload() {
+  downloadOverlay.setAttribute('hidden', '');
+  downloadModal.setAttribute('hidden', '');
+  document.getElementById('download-btn').focus();
+}
+
+function confirmDownload() {
+  const filename = document.getElementById('download-filename').value.trim() || 'document';
+  const content = editorView.state.doc.toString();
+  triggerDownload(filename, content);
+  closeDownload();
+}
+
+document.getElementById('download-btn').addEventListener('click', openDownload);
+document.getElementById('download-close').addEventListener('click', closeDownload);
+document.getElementById('download-cancel').addEventListener('click', closeDownload);
+document.getElementById('download-confirm').addEventListener('click', confirmDownload);
+downloadOverlay.addEventListener('click', closeDownload);
+
+// Focus trap inside download modal
+downloadModal.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { closeDownload(); return; }
+  if (e.key === 'Enter' && document.activeElement === document.getElementById('download-filename')) {
+    e.preventDefault();
+    confirmDownload();
+    return;
+  }
+  if (e.key !== 'Tab') return;
+  const focusable = [...downloadModal.querySelectorAll('input, button')];
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault(); last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault(); first.focus();
+  }
+});

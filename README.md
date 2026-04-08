@@ -10,7 +10,7 @@ Two-column layout: editor on the left, live preview on the right. On mobile (or 
 
 The editor uses IBM Plex Mono with syntax dimming — markdown characters that don't appear in the final output are subtly de-emphasised. Headings are bold. The preview uses IBM Plex Sans or Serif depending on your preference.
 
-Everything — your document and all settings — is saved to localStorage. Nothing leaves the browser.
+Everything — your document and all settings — is saved to localStorage. Nothing leaves the browser. When you're ready to export, use the download button (bottom-right, next to settings) to save your document as a `.md` file. The filename defaults to a slug of your first heading.
 
 ## Settings
 
@@ -46,4 +46,4 @@ Deployed to [jackbush.github.io/carver](https://jackbush.github.io/carver) via G
 
 ## Future Additions
 
-- **Multi-file management**: A sidebar or file switcher allowing users to create, name, and switch between multiple documents, all stored in localStorage. Could extend to import/export of `.md` files.
+- **Multi-file management**: A sidebar or file switcher allowing users to create, name, and switch between multiple documents, all stored in localStorage.
