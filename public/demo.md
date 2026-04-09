@@ -48,15 +48,19 @@ what matters
 
 ---
 
-## The Bottom Bar
+## Actions
 
-Three buttons, bottom right. That's the whole thing.
+Five buttons, bottom right.
 
-**Upload** — the arrow pointing up. Opens your file system. Pick a `.md` file and it lands here, replacing what's open. Good for continuing work you started somewhere else.
+**Settings** — the gear. Editing theme, reading theme, font size, tint, caret style. Changes take effect immediately, your choices are remembered.
 
-**Download** — the arrow pointing down. Saves what's here to a `.md` file. Give it a name, or keep the one it guesses from your first line.
+**Upload** — the arrow pointing up. Opens your file system. Pick a `.md` file and it lands here, replacing what's open.
 
-**Settings** — the gear. Editing theme, reading theme, font size, tint, caret style. Changes take effect immediately. Your choices are remembered.
+**Download** — the arrow pointing down. Saves what's here as an editable `.md` file. You can upload it later and keep editing.
+
+**Export** — the printer. Either print it, or save it as a PDF. Your computer will force it to be light mode, but the other reading settings get applied.
+
+**Guide** — the question mark. Quick reference table with the markdown syntax, because we all forget.
 
 ---
 
