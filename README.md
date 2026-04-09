@@ -1,8 +1,6 @@
 # Carver
 
-Minimal by design, private by nature.
-
-A markdown-based word processor that runs entirely in the browser. No accounts, no servers, no data leaves the page.
+A markdown-based word processor. Minimal by design, private by nature. No accounts, no servers, no data leaves the page.
 
 ---
 
