@@ -653,5 +653,87 @@ body.focus-mode .cm-scroller {
   padding-left: 0.5rem;
 }
 
+/* ── Print ──────────────────────────────────────────────── */
+@media print {
+  /* Force backgrounds/colours to render in print + PDF export */
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Force light theme regardless of on-screen preview theme.
+     The tint (--accent*) still applies, so links, dividers and
+     blockquote bars keep their warm/cool accent. */
+  html[data-preview-theme] {
+    --preview-bg: #fff;
+    --preview-text: hsl(220, 18%, 18%);
+    --preview-text-secondary: hsl(220, 8%, 40%);
+    --preview-heading: hsl(220, 22%, 10%);
+    --preview-code-bg: hsl(220, 22%, 93%);
+    --preview-border: hsl(220, 16%, 86%);
+  }
+
+  /* Hide everything except the reader pane */
+  #editor-pane,
+  #divider,
+  #focus-bar,
+  #footer,
+  .modal-overlay,
+  .modal-panel {
+    display: none !important;
+  }
+
+  /* Reset layout so the preview prints as naturally flowed content.
+     This overrides the focus-mode absolute positioning and max-width
+     padding — on paper, the page margins already define the measure. */
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    background: var(--preview-bg) !important;
+  }
+  body { display: block !important; }
+  #app {
+    display: block !important;
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  #preview-pane {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    background: var(--preview-bg) !important;
+  }
+  #preview {
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    background: var(--preview-bg) !important;
+    color: var(--preview-text) !important;
+  }
+
+  /* Page-break hints so A4 output stays tidy */
+  #preview h1, #preview h2, #preview h3,
+  #preview h4, #preview h5, #preview h6 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  #preview pre, #preview blockquote, #preview table {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  #preview pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  #preview img {
+    max-width: 100%;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
 /* ── Utilities ───────────────────────────────────────────── */
 [hidden] { display: none !important; }

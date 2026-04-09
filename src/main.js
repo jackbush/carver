@@ -265,6 +265,9 @@ downloadModal.addEventListener('keydown', (e) => {
   if (e.key === 'Tab') trapFocus(downloadModal, e);
 });
 
+// ── Print ────────────────────────────────────────────────
+document.getElementById('print-btn').addEventListener('click', () => window.print());
+
 // ── Help modal ───────────────────────────────────────────
 function openHelp() {
   helpOverlay.removeAttribute('hidden');
