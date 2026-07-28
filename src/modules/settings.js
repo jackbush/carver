@@ -2,10 +2,10 @@ const STORAGE_KEY = 'carver-settings';
 
 const DEFAULTS = {
   editorTheme: 'dark',
-  previewTheme: 'dark',
+  previewTheme: 'light',
   caret: 'line',
   previewFont: 'sans',
-  tint: 'cool',
+  tint: 'warm',
   textSize: 'medium',
   focusDesktop: false,
   matchScroll: true,
@@ -16,16 +16,7 @@ const TEXT_SIZE_MAP = { small: '14px', medium: '16px', large: '18px' };
 export function loadSettings() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    const settings = { ...DEFAULTS, ...saved };
-
-    // Default themes to browser preference if not saved
-    if (!saved.editorTheme || !saved.previewTheme) {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (!saved.editorTheme) settings.editorTheme = prefersDark ? 'dark' : 'light';
-      if (!saved.previewTheme) settings.previewTheme = prefersDark ? 'dark' : 'light';
-    }
-
-    return settings;
+    return { ...DEFAULTS, ...saved };
   } catch {
     return { ...DEFAULTS };
   }

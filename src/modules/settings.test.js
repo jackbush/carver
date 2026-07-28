@@ -24,25 +24,18 @@ beforeEach(() => {
 describe('loadSettings()', () => {
   it('returns correct defaults when localStorage is empty', () => {
     const settings = loadSettings();
-    expect(settings.tint).toBe('cool');
+    expect(settings.tint).toBe('warm');
     expect(settings.textSize).toBe('medium');
     expect(settings.caret).toBe('line');
     expect(settings.previewFont).toBe('sans');
     expect(settings.focusDesktop).toBe(false);
   });
 
-  it('defaults themes to light when prefers-color-scheme does not match dark', () => {
-    mockMatchMedia(false);
-    const settings = loadSettings();
-    expect(settings.editorTheme).toBe('light');
-    expect(settings.previewTheme).toBe('light');
-  });
-
-  it('defaults themes to dark when prefers-color-scheme: dark is matched', () => {
+  it('defaults to a dark editor and light preview regardless of prefers-color-scheme', () => {
     mockMatchMedia(true);
     const settings = loadSettings();
     expect(settings.editorTheme).toBe('dark');
-    expect(settings.previewTheme).toBe('dark');
+    expect(settings.previewTheme).toBe('light');
   });
 });
 

@@ -1,8 +1,10 @@
+![Cover image](public/og.png)
+
 # Carver
 
-Minimal by design, private by nature.
+A markdown editor. Minimal by design, private by default, delightful by nature.
 
-A markdown-based word processor that runs entirely in the browser. No accounts, no servers, no data leaves the page.
+Runs entirely in the browser. No accounts, no servers, no data leaves the page.
 
 ---
 
@@ -25,7 +27,7 @@ Everything — your document and all settings — is saved to localStorage. Noth
 | Focus mode on desktop | Forces single-column layout |
 | Match scroll positions | Aligns top of both panes |
 
-Settings and document content persist to localStorage. On first load, themes default to the browser's light/dark preference.
+Settings and document content persist to localStorage. On first load, defaults are a dark editor, a light preview, and a warm tint.
 
 ## Privacy
 
