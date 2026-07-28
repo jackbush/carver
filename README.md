@@ -1,8 +1,7 @@
-![Cover image](public/og.png)
-
 # Carver
+#### A markdown editor. Minimal by design, private by default, delightful by nature.
 
-A markdown editor. Minimal by design, private by default, delightful by nature.
+![Cover image](public/og.png)
 
 | Setting | Options |
 |---------|---------|
