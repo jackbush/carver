@@ -1,8 +1,8 @@
-![Cover image](public/og.png)
-
 # Carver
 
 A markdown editor. Minimal by design, private by default, delightful by nature.
+
+![Cover image](public/og.png)
 
 Runs entirely in the browser. No accounts, no servers, no data leaves the page.
 
