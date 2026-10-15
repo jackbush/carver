@@ -1,6 +1,16 @@
-# What We Write About When We Write
+# This is Carver.
 
-This is Carver. You write. It stays. Nobody else sees it.
+You write. It stays. Nobody else sees it.
+
+**Settings:** the cog. Editing theme, reading theme, font size, tint, caret style.
+
+**Open:** the up arrow. Choose a `.md` file to edit.
+
+**Save:** the down arrow. Saves what's here as an editable `.md` file. You can open it later.
+
+**Export:** the printer. Can also save it as a PDF.
+
+**Guide:** the question mark. Table with the markdown syntax, because we all forget.
 
 ---
 
@@ -45,22 +55,6 @@ what matters
   is what you leave
     in
 ```
-
----
-
-## Actions
-
-Five buttons, bottom right.
-
-**Settings** — the gear. Editing theme, reading theme, font size, tint, caret style. Changes take effect immediately, your choices are remembered.
-
-**Upload** — the arrow pointing up. Opens your file system. Pick a `.md` file and it lands here, replacing what's open.
-
-**Download** — the arrow pointing down. Saves what's here as an editable `.md` file. You can upload it later and keep editing.
-
-**Export** — the printer. Either print it, or save it as a PDF. Your computer will force it to be light mode, but the other reading settings get applied.
-
-**Guide** — the question mark. Quick reference table with the markdown syntax, because we all forget.
 
 ---
 
