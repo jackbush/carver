@@ -1,77 +1,73 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { loadSettings, saveSettings, applySettings } from './settings.js';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { loadSettings, saveSettings, applySettings, resolveTheme } from './settings.js';
 
 const STORAGE_KEY = 'carver-settings';
 
-function mockMatchMedia(prefersDark) {
-  window.matchMedia = vi.fn((query) => ({
-    matches: prefersDark && query === '(prefers-color-scheme: dark)',
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  }));
-}
-
 beforeEach(() => {
   localStorage.clear();
-  mockMatchMedia(false);
 });
 
 describe('loadSettings()', () => {
   it('returns correct defaults when localStorage is empty', () => {
     const settings = loadSettings();
-    expect(settings.tint).toBe('warm');
+    expect(settings.theme).toBe(null);
     expect(settings.textSize).toBe('medium');
-    expect(settings.caret).toBe('line');
-    expect(settings.previewFont).toBe('sans');
-    expect(settings.focusDesktop).toBe(false);
+    expect(settings.preview).toBe('continuous');
   });
 
-  it('defaults to a dark editor and light preview regardless of prefers-color-scheme', () => {
-    mockMatchMedia(true);
+  it('drops settings that no longer exist', () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ tint: 'cool', caret: 'block', editorTheme: 'dark', matchScroll: false }));
     const settings = loadSettings();
-    expect(settings.editorTheme).toBe('dark');
-    expect(settings.previewTheme).toBe('light');
+    expect(settings).not.toHaveProperty('matchScroll');
+    expect(settings).not.toHaveProperty('tint');
+    expect(settings).not.toHaveProperty('caret');
+    expect(settings).not.toHaveProperty('editorTheme');
+  });
+
+  it('turns a saved paper size into the paged preview', () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ page: 'letter' }));
+    const settings = loadSettings();
+    expect(settings.preview).toBe('paged');
+    expect(settings).not.toHaveProperty('page');
+  });
+
+  it('falls back to defaults when stored JSON is corrupt', () => {
+    localStorage.setItem(STORAGE_KEY, '{not json');
+    expect(loadSettings().preview).toBe('continuous');
+  });
+});
+
+describe('resolveTheme()', () => {
+  it('follows the system until the writer picks a theme', () => {
+    // jsdom has no prefers-color-scheme, so the system reads as light
+    expect(resolveTheme({ theme: null })).toBe('light');
+    expect(resolveTheme({ theme: 'dark' })).toBe('dark');
+  });
+
+  it('keeps following the system when nothing was chosen and settings are saved', () => {
+    saveSettings({ ...loadSettings(), textSize: 'large' });
+    expect(loadSettings().theme).toBe(null);
   });
 });
 
 describe('saveSettings() + loadSettings() round-trip', () => {
   it('persists and restores all settings correctly', () => {
     const original = {
-      editorTheme: 'light',
-      previewTheme: 'light',
-      caret: 'block',
-      previewFont: 'serif',
-      tint: 'warm',
+      theme: 'dark',
       textSize: 'large',
-      focusDesktop: true,
+      preview: 'paged',
     };
 
     saveSettings(original);
-    const restored = loadSettings();
-
-    expect(restored.editorTheme).toBe('light');
-    expect(restored.previewTheme).toBe('light');
-    expect(restored.caret).toBe('block');
-    expect(restored.previewFont).toBe('serif');
-    expect(restored.tint).toBe('warm');
-    expect(restored.textSize).toBe('large');
-    expect(restored.focusDesktop).toBe(true);
+    expect(loadSettings()).toEqual(original);
   });
 });
 
 describe('applySettings()', () => {
   const baseSettings = {
-    editorTheme: 'dark',
-    previewTheme: 'light',
-    tint: 'warm',
-    previewFont: 'serif',
+    theme: null,
     textSize: 'medium',
-    focusDesktop: false,
+    preview: 'continuous',
   };
 
   it('sets --base-size to 14px for textSize small', () => {
@@ -84,23 +80,13 @@ describe('applySettings()', () => {
     expect(document.documentElement.style.getPropertyValue('--base-size')).toBe('18px');
   });
 
-  it('sets data-editor-theme attribute on documentElement', () => {
-    applySettings({ ...baseSettings, editorTheme: 'dark' });
-    expect(document.documentElement.getAttribute('data-editor-theme')).toBe('dark');
+  it('sets data-theme attribute on documentElement', () => {
+    applySettings({ ...baseSettings, theme: 'dark' });
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
   });
 
-  it('sets data-preview-theme attribute on documentElement', () => {
-    applySettings({ ...baseSettings, previewTheme: 'light' });
-    expect(document.documentElement.getAttribute('data-preview-theme')).toBe('light');
-  });
-
-  it('sets data-tint attribute on documentElement', () => {
-    applySettings({ ...baseSettings, tint: 'warm' });
-    expect(document.documentElement.getAttribute('data-tint')).toBe('warm');
-  });
-
-  it('sets data-preview-font attribute on documentElement', () => {
-    applySettings({ ...baseSettings, previewFont: 'serif' });
-    expect(document.documentElement.getAttribute('data-preview-font')).toBe('serif');
+  it('sets data-preview attribute on documentElement', () => {
+    applySettings({ ...baseSettings, preview: 'paged' });
+    expect(document.documentElement.getAttribute('data-preview')).toBe('paged');
   });
 });

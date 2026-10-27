@@ -1,0 +1,12 @@
+#!/bin/sh
+# Regenerates the social preview and the README cover, and the 3:2 cover on
+# jackbush.github.io when that repo sits beside this one, after a commit that
+# touches what they show. The new images are left uncommitted.
+git diff-tree --no-commit-id --name-only -r HEAD | grep -qE '^(src/|index\.html$|public/demo\.md$|public/fonts/|scripts/og-image\.mjs$)' || exit 0
+
+cover="../jackbush.github.io/src/assets/covers/carver.jpg"
+if [ -d "$(dirname "$cover")" ]; then
+  npm run og -- --cover "$cover"
+else
+  npm run og
+fi

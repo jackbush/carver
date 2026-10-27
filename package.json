@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "og": "node scripts/og-image.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
@@ -23,6 +24,7 @@
     "@codemirror/state": "^6.6.0",
     "@codemirror/view": "^6.41.0",
     "@lezer/highlight": "^1.2.3",
-    "markdown-it": "^14.1.1"
+    "markdown-it": "^14.1.1",
+    "markdown-it-mark": "^4.0.0"
   }
 }

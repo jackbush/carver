@@ -1,16 +1,12 @@
-# This is Carver.
+# This is ==Carver==.
 
 You write. It stays. Nobody else sees it.
 
-**Settings:** the cog. Editing theme, reading theme, font size, tint, caret style.
+Write in markdown. Alongside, Carver sets it as a printed page, so you can read it back the way someone else will.
 
-**Open:** the up arrow. Choose a `.md` file to edit.
+Your writing is kept in this browser as you go. Nothing is sent anywhere.
 
-**Save:** the down arrow. Saves what's here as an editable `.md` file. You can open it later.
-
-**Export:** the printer. Can also save it as a PDF.
-
-**Guide:** the question mark. Table with the markdown syntax, because we all forget.
+The buttons do what they say. **Open** a markdown file. **Download** this one as a markdown file. **Print** it, on paper or as a PDF. **Guide** has the markdown, because we all forget. **Settings** has text size, light or dark, and whether the page runs on or breaks into sheets.
 
 ---
 
@@ -38,7 +34,7 @@ Things that don't need an order:
 
 ### Emphasis
 
-Wrap words in `**asterisks**` for **bold**. Single `*stars*` for *italic*. The syntax dims in the editor so you see the shape of the sentence, not the scaffolding.
+Wrap words in `**double asterisks**` for **bold**, `*single*` for *italic*, `~~tildes~~` to ~~strike them out~~, and `==equals signs==` to ==highlight== them. While you write, the markdown fades back so you see the shape of the sentence, not the scaffolding.
 
 ### Blockquotes
 
@@ -48,7 +44,7 @@ Use `>` to step back and let someone else speak.
 
 ### Code
 
-Inline `code` sits in backticks. Blocks get their own room:
+Backticks mark `code`. Nothing inside them is formatted, so `**this**` stays as typed. For a block, put three backticks on their own line above and below:
 
 ```
 what matters

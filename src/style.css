@@ -1,109 +1,115 @@
 /* ── Fonts ──────────────────────────────────────────────── */
 @font-face {
-  font-family: 'IBM Plex Mono';
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url('/carver/fonts/SourceSerif4-Variable.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-weight: 200 900;
+  font-display: swap;
+  src: url('/carver/fonts/SourceSerif4-Variable-Italic.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Courier Prime';
   font-style: normal;
   font-weight: 400;
-  src: url('/carver/fonts/IBMPlexMono-Regular.woff2') format('woff2');
+  font-display: swap;
+  src: url('/carver/fonts/CourierPrime-Regular.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 700;
-  src: url('/carver/fonts/IBMPlexMono-Bold.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'IBM Plex Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: url('/carver/fonts/IBMPlexSans-Regular.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'IBM Plex Sans';
+  font-family: 'Courier Prime';
   font-style: italic;
   font-weight: 400;
-  src: url('/carver/fonts/IBMPlexSans-Italic.woff2') format('woff2');
+  font-display: swap;
+  src: url('/carver/fonts/CourierPrime-Italic.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'IBM Plex Sans';
+  font-family: 'Courier Prime';
   font-style: normal;
   font-weight: 700;
-  src: url('/carver/fonts/IBMPlexSans-Bold.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'IBM Plex Serif';
-  font-style: normal;
-  font-weight: 400;
-  src: url('/carver/fonts/IBMPlexSerif-Regular.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'IBM Plex Serif';
-  font-style: italic;
-  font-weight: 400;
-  src: url('/carver/fonts/IBMPlexSerif-Italic.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'IBM Plex Serif';
-  font-style: normal;
-  font-weight: 700;
-  src: url('/carver/fonts/IBMPlexSerif-Bold.woff2') format('woff2');
+  font-display: swap;
+  src: url('/carver/fonts/CourierPrime-Bold.woff2') format('woff2');
 }
 
 /* ── Design tokens ──────────────────────────────────────── */
 :root {
   --base-size: 16px;
 
-  /* Cool tint (default) */
-  --accent-h: 218;
-  --accent-s: 80%;
-  --accent-l: 55%;
-  --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
-  --accent-dim: hsl(var(--accent-h), 45%, 62%);
-  --accent-divider: hsl(var(--accent-h), 35%, 65%);
+  --font-text: 'Source Serif 4', Georgia, serif;
+  --font-typescript: 'Courier Prime', 'Courier New', monospace;
+
+  --masthead-h: 48px;
+  --toolbar-h: 52px;
+  --ui-size: 15px;
+  --editor-pad-block: 3rem;
+  --editor-pad-inline: clamp(1.5rem, 5vw, 4rem);
 }
 
-[data-tint="warm"] {
-  --accent-h: 30;
-  --accent-s: 85%;
-  --accent-l: 48%;
-  --accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
-  --accent-dim: hsl(var(--accent-h), 55%, 58%);
-  --accent-divider: hsl(var(--accent-h), 50%, 62%);
+/* The proof desk: photocopier grey under white sheets */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --desk: #f2f1ee;
+  --desk-line: #dad8d2;
+  --paper: #ffffff;
+  --ink: #141414;
+  --ink-strong: #000000;
+  --ink-2: #4a4845;          /* secondary text on paper, ~9:1 */
+  --ink-3: #6b6864;          /* quiet text on desk or paper, ≥4.5:1 */
+  --syntax-dim: #8a8782;     /* markdown syntax in the typescript, ~3.6:1 */
+  --rule: #e6e4df;
+  --control-line: #cfccc5;
+  --code-ground: #f6f5f2;
+  --scrim: rgba(20, 20, 20, 0.12);
+  --sheet-shadow: 0 1px 2px rgba(20, 20, 20, 0.07), 0 10px 28px -10px rgba(20, 20, 20, 0.22);
+  --panel-shadow: 0 2px 6px rgba(20, 20, 20, 0.08), 0 16px 36px -12px rgba(20, 20, 20, 0.28);
+
+  /* Proofreader's red: caret, selection, links, focus, the active state */
+  --red: #c8241b;
+  --red-wash: #f6dad6;
+
+  /* ==Highlight==: the wash as a highlighter stroke across the lower half of the text */
+  --highlighter: linear-gradient(transparent 55%, var(--red-wash) 55%, var(--red-wash) 92%, transparent 92%);
+
+  /* The bar: an ink band that frames both panes evenly */
+  --bar: #1d1c1a;
+  --bar-line: #1d1c1a;
+  --bar-ink: #ece9e3;
+  --bar-ink-2: #a8a39b;      /* ≥6:1 on the bar */
+  --bar-red: #ef6155;        /* ≥5:1 on the bar */
+  --bar-wash: #4f2420;       /* the highlight, as it reads on a dark ground */
 }
 
-/* Editor theme */
-[data-editor-theme="dark"] {
-  --editor-bg: hsl(220, 16%, 10%);
-  --editor-text: hsl(220, 10%, 80%);
-  --editor-syntax-dim: hsl(220, 8%, 42%);   /* ~3:1 — subtle but legible */
-  --editor-selection-bg: hsl(var(--accent-h), 45%, 22%);
-  --editor-caret: var(--accent);
-}
-[data-editor-theme="light"] {
-  --editor-bg: hsl(220, 22%, 97%);
-  --editor-text: hsl(220, 18%, 16%);
-  --editor-syntax-dim: hsl(220, 8%, 56%);   /* ~3:1 — subtle but legible */
-  --editor-selection-bg: hsl(var(--accent-h), 55%, 87%);
-  --editor-caret: var(--accent);
-}
+/* The same desk after dark: low-glare grounds, warm light ink */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --desk: #161514;
+  --desk-line: #2e2c29;
+  --paper: #1f1e1c;
+  --ink: #e8e5df;
+  --ink-strong: #ffffff;
+  --ink-2: #bdb9b1;
+  --ink-3: #9a958d;          /* ≥5.5:1 on desk and paper */
+  --syntax-dim: #8a867f;     /* ~4.4:1 on paper */
+  --rule: #33312e;
+  --control-line: #4a4743;
+  --code-ground: #282624;
+  --scrim: rgba(0, 0, 0, 0.35);
+  --sheet-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -10px rgba(0, 0, 0, 0.6);
+  --panel-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 16px 36px -12px rgba(0, 0, 0, 0.7);
+  --red: #ef6155;
+  --red-wash: #4f2420;
 
-/* Preview theme */
-[data-preview-theme="dark"] {
-  --preview-bg: hsl(220, 14%, 12%);
-  --preview-text: hsl(220, 8%, 78%);
-  --preview-text-secondary: hsl(220, 6%, 56%);  /* ≥4.5:1 on dark bg */
-  --preview-heading: hsl(220, 14%, 92%);
-  --preview-code-bg: hsl(220, 14%, 18%);
-  --preview-border: hsl(220, 12%, 22%);
-  --preview-selection-bg: hsl(var(--accent-h), 45%, 22%);
-}
-[data-preview-theme="light"] {
-  --preview-bg: hsl(220, 28%, 99%);
-  --preview-text: hsl(220, 18%, 18%);
-  --preview-text-secondary: hsl(220, 8%, 40%);  /* ~3.5:1 on light bg — intentionally muted (blockquotes/secondary) */
-  --preview-heading: hsl(220, 22%, 10%);
-  --preview-code-bg: hsl(220, 22%, 93%);
-  --preview-border: hsl(220, 16%, 86%);
-  --preview-selection-bg: hsl(var(--accent-h), 55%, 87%);
+  --bar: #0d0c0b;
+  --bar-line: #2e2c29;
+  --bar-ink: #e8e5df;
+  --bar-ink-2: #9a958d;
+  --bar-red: #ef6155;
+  --bar-wash: #4f2420;
 }
 
 /* ── Reset & base ───────────────────────────────────────── */
@@ -115,24 +121,136 @@
 
 html, body {
   height: 100%;
-  font-size: var(--base-size);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: hsl(220, 16%, 10%);
+  background: var(--desk);
+  color: var(--ink);
 }
 
 body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  font-family: var(--font-text);
+  font-size: var(--ui-size);
 }
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+::selection { background: var(--red-wash); }
+
+/* ==Highlight==, on the proof and in the Guide */
+mark {
+  color: inherit;
+  background: var(--highlighter);
+  padding: 0 0.08em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+
+/* ── Masthead ───────────────────────────────────────────── */
+#masthead {
+  flex-shrink: 0;
+  height: var(--masthead-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0.75rem 0 1.25rem;
+  background: var(--bar);
+  border-bottom: 1px solid var(--bar-line);
+  color: var(--bar-ink);
+  /* Above the panel scrim, so the open action's highlight stays clear */
+  position: relative;
+  z-index: 202;
+}
+
+#masthead-start {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  min-width: 0;
+}
+
+#wordmark {
+  color: var(--bar-red);
+  font-size: 17px;
+  font-weight: 620;
+  letter-spacing: -0.01em;
+}
+
+#word-count {
+  color: var(--bar-ink-2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+#actions {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#actions button {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+#actions .icon { color: var(--bar-ink-2); }
+
+#actions button,
+#view-tabs button {
+  background: none;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 0.4rem 0.65rem;
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.35em;
+  transition: text-decoration-color 0.15s ease-out;
+}
+
+#actions button:hover { text-decoration-color: var(--bar-ink-2); }
+#actions button:hover .icon { color: var(--bar-ink); }
+
+#masthead :focus-visible { outline-color: var(--bar-red); }
+
+/* Chosen in the bar: the action wears the proofreader's highlight */
+#actions button[aria-expanded="true"],
+body.single-pane #view-tabs button[aria-selected="true"] {
+  background: var(--bar-wash);
+  color: var(--bar-ink);
+  text-decoration-color: transparent;
+}
+
+#actions button[aria-expanded="true"] .icon { color: var(--bar-red); }
+
+#view-tabs { display: none; }
 
 /* ── App layout ─────────────────────────────────────────── */
 #app {
   display: flex;
   flex: 1;
   overflow: hidden;
-  position: relative;
   min-height: 0;
 }
 
@@ -145,595 +263,631 @@ body {
   min-width: 0;
 }
 
-#editor-pane { background: var(--editor-bg); }
-#preview-pane { background: var(--preview-bg); }
+#editor-pane { background: var(--paper); }
 
-/* ── Divider ─────────────────────────────────────────────── */
-#divider {
-  width: 2px;
-  background: var(--accent-divider);
-  flex-shrink: 0;
+#preview-pane {
+  background: var(--desk);
+  border-left: 1px solid var(--desk-line);
 }
 
-/* ── CodeMirror fill ────────────────────────────────────── */
+/* ── Typescript (CodeMirror) ────────────────────────────── */
 #editor { height: 100%; }
 
 .cm-editor {
   height: 100%;
-  font-family: 'IBM Plex Mono', monospace;
   font-size: var(--base-size);
 }
 
-.cm-scroller { overflow: auto; }
-
-/* ── Preview content ─────────────────────────────────────── */
-#preview ::selection {
-  background: var(--preview-selection-bg);
+.cm-scroller {
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--control-line) transparent;
 }
 
+/* ── The desk and its sheets ────────────────────────────── */
+/* The desk's side gutter sits on the frame, not as padding on this scroller:
+   Chrome can't drag-select scaled text inside a side-padded scroll container. */
 #preview {
+  --desk-gutter: 3rem;
   height: 100%;
   overflow-y: auto;
-  padding: 2rem 2.5rem;
-  font-family: 'IBM Plex Sans', sans-serif;
+  padding: 2.5rem 0 4rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--control-line) transparent;
+}
+
+#preview:focus { outline: none; }
+
+.sheet {
+  background: var(--paper);
+  color: var(--ink);
+  margin: 0 auto;
+  box-shadow: var(--sheet-shadow);
+}
+
+/* Paged proofs are laid out at full size and scaled into this frame
+   (see fitPages); a continuous sheet just fills it. */
+#proof-frame {
+  width: calc(100% - 2 * var(--desk-gutter));
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+#proof { container-type: inline-size; }
+
+[data-preview="paged"] #proof {
+  width: var(--paper-w);
+  transform-origin: 0 0;
+}
+
+/* A sheet the width of the writer's paper, with the same margins, without the breaks */
+.sheet--continuous {
+  --sheet-w: min(100cqw, var(--paper-w));
+  --margin: max(1.5rem, calc(var(--sheet-w) * var(--margin-ratio)));
+  width: 100%;
+  max-width: var(--paper-w);
+  min-height: 100%;
+  padding: var(--margin) var(--margin) calc(var(--margin) * var(--foot-ratio));
   font-size: var(--base-size);
-  color: var(--preview-text);
-  line-height: 1.7;
 }
 
-[data-preview-font="serif"] #preview {
-  font-family: 'IBM Plex Serif', serif;
+.sheet--paged {
+  --margin: calc(var(--paper-w) * var(--margin-ratio));
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--paper-w);
+  height: var(--paper-h);
+  padding: var(--margin) var(--margin) calc(var(--margin) * var(--foot-ratio));
+  margin-bottom: 28px;
+  overflow: hidden;
+  font-size: var(--base-size);
 }
 
-#preview h1, #preview h2, #preview h3,
-#preview h4, #preview h5, #preview h6 {
-  color: var(--preview-heading);
-  line-height: 1.3;
-  margin-top: 1.8em;
-  margin-bottom: 0.5em;
-  font-weight: 700;
-}
-#preview h1:first-child,
-#preview h2:first-child,
-#preview h3:first-child { margin-top: 0; }
-#preview h1 { font-size: 2em; }
-#preview h2 { font-size: 1.5em; }
-#preview h3 { font-size: 1.2em; }
-#preview h4, #preview h5, #preview h6 { font-size: 1em; }
-
-#preview p { margin-bottom: 1em; }
-
-#preview a {
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+.sheet--paged .sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
-#preview code {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.875em;
-  background: var(--preview-code-bg);
-  padding: 0.15em 0.35em;
-  border-radius: 3px;
+.folio {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--margin) * 0.6);
+  text-align: center;
+  font-size: 0.8em;
+  color: var(--ink-3);
+  font-variant-numeric: oldstyle-nums;
 }
 
-#preview pre {
-  background: var(--preview-code-bg);
-  border-radius: 6px;
-  padding: 1em 1.25em;
-  overflow-x: auto;
-  margin-bottom: 1em;
+/* ── Proof typography ───────────────────────────────────── */
+.sheet-body {
+  font-family: var(--font-text);
+  font-optical-sizing: auto;
+  font-kerning: normal;
+  line-height: 1.55;
+  hanging-punctuation: first;
+  overflow-wrap: break-word;
 }
 
-#preview pre code {
+.sheet-body > :first-child,
+.sheet-body .cont { margin-top: 0; }
+
+.sheet-body p { margin: 0 0 0.85em; }
+
+.sheet-body h1,
+.sheet-body h2,
+.sheet-body h3,
+.sheet-body h4,
+.sheet-body h5,
+.sheet-body h6 {
+  text-wrap: balance;
+  break-after: avoid;
+}
+
+.sheet-body h1 {
+  font-size: 2.15em;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+  margin: 1.4em 0 0.55em;
+}
+
+.sheet-body h2 {
+  font-size: 1.4em;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.008em;
+  margin: 1.7em 0 0.45em;
+}
+
+.sheet-body h3 {
+  font-size: 1.12em;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.35;
+  margin: 1.4em 0 0.3em;
+}
+
+.sheet-body h4,
+.sheet-body h5,
+.sheet-body h6 {
+  font-size: 1em;
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.05em;
+  margin: 1.3em 0 0.3em;
+}
+
+.sheet-body strong { font-weight: 640; }
+
+.sheet-body a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: var(--red);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.sheet-body code {
+  font-family: var(--font-typescript);
+  font-size: 0.92em;
+  line-height: 1;   /* keep the paragraph's line rhythm */
+  background: var(--code-ground);
+  padding: 0.1em 0.3em;
+  border-radius: 2px;
+}
+
+.sheet-body pre {
+  font-size: 0.86em;
+  line-height: 1.5;
+  background: var(--code-ground);
+  padding: 0.9em 1.1em;
+  margin: 0 0 1em;
+  white-space: pre-wrap;
+  break-inside: avoid;
+}
+
+.sheet-body pre code {
+  font-size: inherit;
+  line-height: inherit;
   background: none;
   padding: 0;
-  font-size: 0.875em;
 }
 
-#preview blockquote {
-  border-left: 3px solid var(--accent-divider);
-  margin: 1em 0;
-  padding: 0.25em 1em;
-  color: var(--preview-text-secondary);
+.sheet-body blockquote {
+  margin: 0 0 0.85em;
+  padding-left: 1.6em;
+  color: var(--ink-2);
   font-style: italic;
 }
 
-#preview ul, #preview ol {
-  margin-bottom: 1em;
-  padding-left: 1.5em;
-}
-#preview li { margin-bottom: 0.25em; }
+.sheet-body blockquote em { font-style: normal; }
 
-#preview hr {
-  border: none;
-  border-top: 1px solid var(--preview-border);
-  margin: 2em 0;
+.sheet-body ul,
+.sheet-body ol {
+  margin: 0 0 0.85em;
+  padding-left: 1.4em;
 }
 
-/* ── Focus bar ───────────────────────────────────────────── */
-#focus-bar {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 44px;
-  background: var(--editor-bg);
-  border-bottom: 2px solid var(--accent-divider);
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  z-index: 100;
-  padding: 0 1rem;
+.sheet-body li { margin-bottom: 0.2em; }
+.sheet-body li > ul,
+.sheet-body li > ol { margin: 0.2em 0 0; }
+.sheet-body li::marker {
+  color: var(--ink-3);
+  font-variant-numeric: oldstyle-nums;
 }
+.sheet-body li.cont { list-style: none; }
 
-.focus-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--editor-text);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  opacity: 0.5;
-  transition: opacity 0.15s, color 0.15s;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 4px;
-}
-
-.focus-label:hover { opacity: 0.75; }
-
-.focus-label.active {
-  opacity: 1;
-  color: var(--accent);
-}
-
-.focus-label:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-#focus-toggle {
-  background: none;
-  border: none;
-  color: var(--accent);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  border-radius: 4px;
-}
-
-#focus-toggle:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* Focus mode layout */
-body.focus-mode #focus-bar { display: flex; }
-
-body.focus-mode #divider { display: none; }
-
-body.focus-mode #editor-pane,
-body.focus-mode #preview-pane {
+.sheet-body ul { list-style: none; }
+.sheet-body ul > li { position: relative; }
+.sheet-body ul > li::before {
+  content: '';
   position: absolute;
-  top: 44px;    /* start below the fixed focus bar */
-  right: 0;
-  bottom: 0;
-  left: 0;
+  left: -0.95em;
+  top: 0.68em;
+  width: 0.3em;
+  height: 0.3em;
+  border-radius: 50%;
+  background: var(--ink-3);
+}
+.sheet-body ul > li.cont::before { content: none; }
+
+.sheet-body hr {
+  border: 0;
+  margin: 1.6em 0;
+  text-align: center;
+  color: var(--ink-3);
+  break-after: avoid;
+}
+
+.sheet-body hr::after {
+  content: '*\2003*\2003*';
+}
+
+.sheet-body img {
+  display: block;
+  max-width: 100%;
+  margin: 1em auto;
+}
+
+.sheet-body table {
   width: 100%;
-  flex: unset;
+  border-collapse: collapse;
+  margin: 0 0 1em;
+  font-size: 0.92em;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
-body.focus-mode #editor-pane { display: flex; }
-body.focus-mode #preview-pane { display: none; }
-body.focus-mode.show-read #editor-pane { display: none; }
-body.focus-mode.show-read #preview-pane { display: flex; }
-
-/* Focus mode: constrain text to a readable measure (640px), centred.
-   When the viewport is too narrow for 640px, fall back to the same
-   horizontal padding as the footer (1.25rem). */
-body.focus-mode #preview {
-  padding-left: max(1.25rem, calc((100% - 640px) / 2));
-  padding-right: max(1.25rem, calc((100% - 640px) / 2));
-}
-body.focus-mode .cm-scroller {
-  padding-left: max(1.25rem, calc((100% - 640px) / 2)) !important;
-  padding-right: max(1.25rem, calc((100% - 640px) / 2)) !important;
+.sheet-body th,
+.sheet-body td {
+  text-align: left;
+  padding: 0.4em 0.6em 0.4em 0;
+  border-bottom: 1px solid var(--rule);
 }
 
-/* ── Footer ──────────────────────────────────────────────── */
-#footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1.25rem;
-  height: 40px;
-  background: hsl(220, 16%, 10%);
-  border-top: 2px solid var(--accent-divider);
-  flex-shrink: 0;
-  z-index: 10;
+.sheet-body th {
+  font-weight: 600;
+  border-bottom-color: var(--ink);
 }
 
-#footer-brand {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-}
+.sheet-body ::selection { background: var(--red-wash); }
 
-#footer-title {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--accent);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-#footer-tagline {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.68rem;
-  color: hsl(220, 8%, 56%);
-}
-
-#footer-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.15rem;
-}
-
-#footer-actions button {
-  background: none;
-  border: none;
-  color: var(--accent);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  border-radius: 4px;
-  opacity: 0.8;
-  transition: opacity 0.15s;
-}
-
-#footer-actions button:hover { opacity: 1; }
-
-#footer-actions button:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  opacity: 1;
-}
-
-/* ── Modals (shared) ────────────────────────────────────── */
+/* ── Dialogs ────────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: var(--scrim);
   z-index: 200;
 }
 
 .modal-panel {
   position: fixed;
-  bottom: 52px;
-  right: 1rem;
-  width: 320px;
-  background: var(--editor-bg);
-  border: 1px solid var(--accent-divider);
-  border-radius: 8px;
+  top: calc(var(--masthead-h) + 8px);
+  right: 0.75rem;
+  width: 420px;
+  max-height: calc(100vh - var(--masthead-h) - 24px);
+  overflow-y: auto;
+  background: var(--paper);
+  border: 1px solid var(--desk-line);
+  border-radius: 3px;
   z-index: 201;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
-  overflow: hidden;
+  box-shadow: var(--panel-shadow);
 }
+
+
 
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.7rem 1rem;
-  border-bottom: 2px solid var(--accent-divider);
+  padding: 1rem 0.75rem 0.5rem 1.25rem;
 }
 
 .modal-title {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--editor-text);
+  font-size: 18px;
+  font-weight: 620;
+  letter-spacing: -0.01em;
 }
 
 .modal-close {
+  display: flex;
   background: none;
   border: none;
-  color: var(--editor-text);
+  border-radius: 2px;
+  color: var(--ink-3);
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-  border-radius: 4px;
-  opacity: 0.55;
-  transition: opacity 0.15s;
+  padding: 0.35rem;
+  margin-right: -0.1rem;
 }
 
-.modal-close:hover { opacity: 1; }
+.modal-close .icon { width: 18px; height: 18px; }
 
-.modal-close:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+.modal-close:hover { color: var(--ink); }
+
+.modal-body { padding: 0.5rem 1.25rem 1.25rem; }
+
+/* Settings */
+.setting {
+  border: 0;
+  display: block;
+  margin-bottom: 1rem;
 }
 
-/* ── Settings modal ─────────────────────────────────────── */
-#settings-body { padding: 0.4rem 0; }
+.setting:last-child { margin-bottom: 0; }
 
-.setting-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 1rem;
-  gap: 1rem;
-}
-
+.setting legend,
 .setting-label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--editor-text);
-  flex-shrink: 0;
+  display: block;
+  font-size: 14px;
+  color: var(--ink-3);
+  margin-bottom: 0.4rem;
 }
 
-.setting-row select {
-  background: var(--editor-bg);
-  border: 1px solid var(--accent-divider);
-  color: var(--editor-text);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.73rem;
-  padding: 3px 6px;
-  border-radius: 4px;
+.segmented {
+  display: flex;
+  border: 1px solid var(--control-line);
+  border-radius: 3px;
+}
+
+.segmented label {
+  flex: 1;
+  position: relative;
+}
+
+.segmented label + label { border-left: 1px solid var(--control-line); }
+
+.segmented input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
   cursor: pointer;
-  min-width: 95px;
 }
 
-.setting-row select:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+.segmented label > span {
+  display: block;
+  padding: 0.45rem 0.6rem;
+  text-align: center;
+  color: var(--ink-2);
+  white-space: nowrap;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
 }
 
-.setting-row--checkbox { cursor: default; }
+.segmented label:hover > span { background: var(--desk); }
 
-.setting-row--checkbox input[type="checkbox"] {
-  width: 15px;
-  height: 15px;
-  accent-color: var(--accent);
-  cursor: pointer;
-  flex-shrink: 0;
+.segmented .word {
+  padding: 0.1em 0.3em;
+  border-radius: 2px;
+  transition: background-color 0.15s ease-out;
 }
 
-/* ── Download modal ─────────────────────────────────────── */
-#download-body { padding: 0.4rem 0 0; }
+/* Chosen: the word wears the same wash as selected text */
+.segmented input:checked + span { color: var(--ink); }
+.segmented input:checked + span .word { background: var(--red-wash); }
 
+.segmented input:focus-visible + span {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+  position: relative;
+}
+
+/* Save */
 .filename-input-group {
   display: flex;
-  align-items: center;
-  border: 1px solid var(--accent-divider);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.filename-input-group input {
-  background: var(--editor-bg);
-  border: none;
-  color: var(--editor-text);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.73rem;
-  padding: 3px 4px 3px 6px;
-  outline: none;
-  min-width: 0;
-  width: 140px;
-}
-
-.filename-ext {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.73rem;
-  color: var(--editor-syntax-dim);
-  padding: 3px 6px 3px 0;
-  background: var(--editor-bg);
-  user-select: none;
-  white-space: nowrap;
+  align-items: baseline;
+  border: 1px solid var(--control-line);
+  border-radius: 3px;
+  padding: 0.45rem 0.6rem;
+  font-family: var(--font-typescript);
+  font-size: 15px;
 }
 
 .filename-input-group:focus-within {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-}
-
-#download-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  padding: 0.65rem 1rem;
-  margin-top: 0.25rem;
-  border-top: 1px solid var(--accent-divider);
-}
-
-#download-cancel,
-#download-confirm {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.73rem;
-  padding: 4px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  border: 1px solid var(--accent-divider);
-  transition: opacity 0.15s;
-}
-
-#download-cancel {
-  background: transparent;
-  color: var(--editor-text);
-  opacity: 0.7;
-}
-
-#download-cancel:hover { opacity: 1; }
-
-#download-confirm {
-  background: var(--accent);
-  color: hsl(0, 0%, 100%);
-  border-color: var(--accent);
-  opacity: 0.9;
-}
-
-#download-confirm:hover { opacity: 1; }
-
-#download-cancel:focus-visible,
-#download-confirm:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--red);
   outline-offset: 2px;
 }
 
-/* ── Mobile overrides ────────────────────────────────────── */
-@media (max-width: 799px) {
-  /* Reduce panel horizontal padding to match footer (1.25rem) */
-  body.focus-mode #preview {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-  }
-  body.focus-mode .cm-scroller {
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
-  }
-
-  /* Position modals at top so they stay visible above soft keyboard */
-  .modal-panel {
-    top: 5vh;
-    bottom: auto;
-    left: 1rem;
-    right: 1rem;
-    width: auto;
-  }
-
-  /* Prevent iOS from zooming in when focusing the filename input */
-  .filename-input-group input {
-    font-size: 16px;
-  }
+.filename-input-group input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  font: inherit;
+  color: var(--ink);
 }
 
-/* Hide tagline on very narrow screens where it overflows */
-@media (max-width: 400px) {
-  #footer-tagline {
-    display: none;
-  }
+.filename-ext {
+  color: var(--ink-3);
+  user-select: none;
 }
 
-/* ── Help modal ─────────────────────────────────────────── */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.button {
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--control-line);
+  border-radius: 3px;
+  background: var(--paper);
+  cursor: pointer;
+  transition: background-color 0.15s ease-out;
+}
+
+.button:hover { background: var(--desk); }
+
+.button--primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.button--primary:hover { background: var(--ink-strong); }
+
+/* Guide */
 .syntax-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.73rem;
 }
 
 .syntax-table td {
-  padding: 0.42rem 0.75rem;
-  vertical-align: middle;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: baseline;
 }
 
-.syntax-table tr:not(:last-child) td {
-  border-bottom: 1px solid hsla(220, 10%, 50%, 0.12);
-}
+.syntax-table tr:last-child td { border-bottom: none; }
 
-.syntax-cell {
-  color: var(--editor-text);
+.syntax-table .syntax-cell {
+  font-family: var(--font-typescript);
+  font-size: 14px;
   white-space: nowrap;
 }
 
-.syntax-desc {
-  color: var(--editor-syntax-dim);
-  padding-left: 0.5rem;
+.syntax-table .syntax-desc {
+  padding-right: 1.5rem;
+  color: var(--ink-2);
+}
+
+/* ── Narrow screens: one side at a time ─────────────────── */
+body.single-pane #wordmark { display: none; }
+
+body.single-pane #masthead {
+  padding: 0 1rem 0 0.5rem;
+}
+
+body.single-pane #masthead-start { order: 2; }
+
+body.single-pane #view-tabs {
+  display: flex;
+  order: 1;
+}
+
+body.single-pane #view-tabs button {
+  font-size: 16px;
+  color: var(--bar-ink-2);
+}
+
+body.single-pane #actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 202;
+  height: calc(var(--toolbar-h) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  justify-content: space-around;
+  background: var(--bar);
+  border-top: 1px solid var(--bar-line);
+  color: var(--bar-ink);
+}
+
+body.single-pane #actions button {
+  flex-direction: column;
+  gap: 0.15rem;
+  font-size: 13px;
+  padding: 0.3rem 0.5rem;
+}
+
+body.single-pane #app { padding-bottom: calc(var(--toolbar-h) + env(safe-area-inset-bottom)); }
+
+body.single-pane #preview-pane { border-left: none; }
+body.single-pane #preview-pane { display: none; }
+body.single-pane.show-proof #editor-pane { display: none; }
+body.single-pane.show-proof #preview-pane { display: flex; }
+
+body.single-pane #preview {
+  --desk-gutter: 0.75rem;
+  padding: 0.75rem 0 2rem;
+}
+
+
+body.single-pane {
+  --editor-pad-block: 1.75rem;
+  --editor-pad-inline: 1.25rem;
+}
+
+body.single-pane .modal-panel {
+  left: 0.75rem;
+  right: 0.75rem;
+  width: auto;
+}
+
+/* Prevent iOS from zooming in when focusing the filename input */
+@media (max-width: 799px) {
+  .filename-input-group { font-size: 16px; }
 }
 
 /* ── Print ──────────────────────────────────────────────── */
 @media print {
-  /* Force backgrounds/colours to render in print + PDF export */
+  :root[data-theme] {
+    color-scheme: light;
+    --paper: #ffffff;
+    --ink: #141414;
+    --ink-2: #4a4845;
+    --ink-3: #6b6864;
+    --rule: #e6e4df;
+    --code-ground: #f6f5f2;
+    --red: #c8241b;
+    --red-wash: #f6dad6;
+  }
+
   *, *::before, *::after {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* Force light theme regardless of on-screen preview theme.
-     The tint (--accent*) still applies, so links, dividers and
-     blockquote bars keep their warm/cool accent. */
-  html[data-preview-theme] {
-    --preview-bg: #fff;
-    --preview-text: hsl(220, 18%, 18%);
-    --preview-text-secondary: hsl(220, 8%, 40%);
-    --preview-heading: hsl(220, 22%, 10%);
-    --preview-code-bg: hsl(220, 22%, 93%);
-    --preview-border: hsl(220, 16%, 86%);
-  }
-
-  /* Hide everything except the reader pane */
+  #masthead,
   #editor-pane,
-  #divider,
-  #focus-bar,
-  #footer,
   .modal-overlay,
   .modal-panel {
     display: none !important;
   }
 
-  /* Reset layout so the preview prints as naturally flowed content.
-     This overrides the focus-mode absolute positioning and max-width
-     padding — on paper, the page margins already define the measure. */
   html, body {
     height: auto !important;
     overflow: visible !important;
-    background: var(--preview-bg) !important;
+    background: var(--paper) !important;
   }
-  body { display: block !important; }
-  #app {
-    display: block !important;
-    position: static !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-  #preview-pane {
-    display: block !important;
-    position: static !important;
-    width: 100% !important;
-    height: auto !important;
-    overflow: visible !important;
-    background: var(--preview-bg) !important;
-  }
+
+  body,
+  #app,
+  #preview-pane,
   #preview {
+    display: block !important;
     height: auto !important;
     overflow: visible !important;
     padding: 0 !important;
-    background: var(--preview-bg) !important;
-    color: var(--preview-text) !important;
+    border: 0 !important;
+    background: none !important;
   }
 
-  /* Page-break hints so A4 output stays tidy */
-  #preview h1, #preview h2, #preview h3,
-  #preview h4, #preview h5, #preview h6 {
-    break-after: avoid;
-    page-break-after: avoid;
+  #proof-frame {
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
   }
-  #preview pre, #preview blockquote, #preview table {
+
+  #proof { transform: none !important; }
+
+  /* If the printer sets a line taller than the screen did, let it show rather than vanish */
+  .sheet--paged .sheet-body { overflow: visible; }
+
+  .sheet {
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
+
+  .sheet--continuous {
+    max-width: none;
+    min-height: 0;
+    padding: 0 !important;
+  }
+
+  .sheet--paged { break-after: page; }
+  .sheet--paged:last-child { break-after: auto; }
+
+  .sheet-body pre,
+  .sheet-body blockquote,
+  .sheet-body table,
+  .sheet-body img {
     break-inside: avoid;
-    page-break-inside: avoid;
-  }
-  #preview pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
-  #preview img {
-    max-width: 100%;
-    break-inside: avoid;
-    page-break-inside: avoid;
   }
 }
 
 /* ── Utilities ───────────────────────────────────────────── */
 [hidden] { display: none !important; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

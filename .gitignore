@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Impeccable working files (mocks, review captures, sidecar, detector config)
+.impeccable/
