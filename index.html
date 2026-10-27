@@ -104,28 +104,18 @@
                 <button id="settings-close" class="modal-close" aria-label="Close"><svg aria-hidden="true" class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" /></svg></button>
             </div>
             <div class="modal-body">
-                <fieldset class="setting">
-                    <legend>Text size</legend>
-                    <div class="segmented">
-                        <label><input type="radio" name="textSize" value="small" /><span><span class="word">Small</span></span></label>
-                        <label><input type="radio" name="textSize" value="medium" /><span><span class="word">Medium</span></span></label>
-                        <label><input type="radio" name="textSize" value="large" /><span><span class="word">Large</span></span></label>
-                    </div>
-                </fieldset>
-                <fieldset class="setting">
-                    <legend>Preview</legend>
-                    <div class="segmented">
-                        <label><input type="radio" name="preview" value="continuous" /><span><span class="word">Continuous</span></span></label>
-                        <label><input type="radio" name="preview" value="paged" /><span><span class="word">Paged</span></span></label>
-                    </div>
-                </fieldset>
-                <fieldset class="setting">
-                    <legend>Appearance</legend>
-                    <div class="segmented">
-                        <label><input type="radio" name="theme" value="light" /><span><span class="word">Light</span></span></label>
-                        <label><input type="radio" name="theme" value="dark" /><span><span class="word">Dark</span></span></label>
-                    </div>
-                </fieldset>
+                <div class="setting" role="radiogroup" aria-labelledby="setting-textSize">
+                    <span class="setting-label" id="setting-textSize">Text size</span>
+                    <span class="choices"><label><input type="radio" name="textSize" value="small" /><span class="word">Small</span></label><label><input type="radio" name="textSize" value="medium" /><span class="word">Medium</span></label><label><input type="radio" name="textSize" value="large" /><span class="word">Large</span></label></span>
+                </div>
+                <div class="setting" role="radiogroup" aria-labelledby="setting-preview">
+                    <span class="setting-label" id="setting-preview">Preview</span>
+                    <span class="choices"><label><input type="radio" name="preview" value="continuous" /><span class="word">Continuous</span></label><label><input type="radio" name="preview" value="paged" /><span class="word">Paged</span></label></span>
+                </div>
+                <div class="setting" role="radiogroup" aria-labelledby="setting-theme">
+                    <span class="setting-label" id="setting-theme">Appearance</span>
+                    <span class="choices"><label><input type="radio" name="theme" value="light" /><span class="word">Light</span></label><label><input type="radio" name="theme" value="dark" /><span class="word">Dark</span></label></span>
+                </div>
             </div>
         </div>
 
@@ -137,8 +127,8 @@
                 <button id="download-close" class="modal-close" aria-label="Close"><svg aria-hidden="true" class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" /></svg></button>
             </div>
             <div class="modal-body">
-                <label class="setting" for="download-filename">
-                    <span class="setting-label">File name</span>
+                <label class="field" for="download-filename">
+                    <span class="field-label">File name</span>
                     <span class="filename-input-group">
                         <input type="text" id="download-filename" autocomplete="off" spellcheck="false" />
                         <span class="filename-ext">.md</span>

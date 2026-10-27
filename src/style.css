@@ -68,20 +68,19 @@
   --sheet-shadow: 0 1px 2px rgba(20, 20, 20, 0.07), 0 10px 28px -10px rgba(20, 20, 20, 0.22);
   --panel-shadow: 0 2px 6px rgba(20, 20, 20, 0.08), 0 16px 36px -12px rgba(20, 20, 20, 0.28);
 
-  /* Proofreader's red: caret, selection, links, focus, the active state */
-  --red: #c8241b;
-  --red-wash: #f6dad6;
-
-  /* ==Highlight==: the wash as a highlighter stroke across the lower half of the text */
-  --highlighter: linear-gradient(transparent 55%, var(--red-wash) 55%, var(--red-wash) 92%, transparent 92%);
+  /* Riso inks: Orange for marks, Sunflower for the highlighter */
+  --accent: #e8551c;         /* orange deepened for paper: caret, focus, link underline (3.6:1) */
+  --highlight: rgb(255 181 17 / 0.45);   /* Sunflower: ==highlight== and anything chosen */
+  --selection: rgb(255 108 47 / 0.22);   /* Orange, faint: selected text, distinct from a highlight */
+  --hover: rgb(20 20 20 / 0.10);         /* grey: the highlight a pointer previews */
 
   /* The bar: an ink band that frames both panes evenly */
   --bar: #1d1c1a;
   --bar-line: #1d1c1a;
   --bar-ink: #ece9e3;
   --bar-ink-2: #a8a39b;      /* ≥6:1 on the bar */
-  --bar-red: #ef6155;        /* ≥5:1 on the bar */
-  --bar-wash: #4f2420;       /* the highlight, as it reads on a dark ground */
+  --bar-accent: #ff6c2f;     /* Riso Orange: the wordmark and the open action's icon, 6:1 on the bar */
+  --bar-highlight: rgb(255 181 17 / 0.22);
 }
 
 /* The same desk after dark: low-glare grounds, warm light ink */
@@ -101,15 +100,17 @@
   --scrim: rgba(0, 0, 0, 0.35);
   --sheet-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -10px rgba(0, 0, 0, 0.6);
   --panel-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 16px 36px -12px rgba(0, 0, 0, 0.7);
-  --red: #ef6155;
-  --red-wash: #4f2420;
+  --accent: #ff6c2f;
+  --highlight: rgb(255 181 17 / 0.36);
+  --selection: rgb(255 108 47 / 0.30);
+  --hover: rgb(255 255 255 / 0.10);
 
   --bar: #0d0c0b;
   --bar-line: #2e2c29;
   --bar-ink: #e8e5df;
   --bar-ink-2: #9a958d;
-  --bar-red: #ef6155;
-  --bar-wash: #4f2420;
+  --bar-accent: #ff6c2f;
+  --bar-highlight: rgb(255 181 17 / 0.22);
 }
 
 /* ── Reset & base ───────────────────────────────────────── */
@@ -140,17 +141,28 @@ button {
   color: inherit;
 }
 
-::selection { background: var(--red-wash); }
+::selection { background: var(--selection); }
+
+/* The highlighter: a stroke through the lower part of serif words, its top
+   1px above the lowercase letters. Each user sets --stroke-colour. Measured
+   from Source Serif 4, whose character box is 1.38em tall with the x-height
+   0.576em below its top. */
+mark,
+.choices .word {
+  background: linear-gradient(var(--stroke-colour), var(--stroke-colour)) no-repeat;
+  background-position: 0 calc(0.576em - 1px);
+  background-size: 100% 0.58em;
+}
 
 /* ==Highlight==, on the proof and in the Guide */
 mark {
+  --stroke-colour: var(--highlight);
   color: inherit;
-  background: var(--highlighter);
   padding: 0 0.08em;
 }
 
 :focus-visible {
-  outline: 2px solid var(--red);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -173,15 +185,15 @@ mark {
 
 #masthead-start {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 1rem;
   min-width: 0;
 }
 
 #wordmark {
-  color: var(--bar-red);
-  font-size: 17px;
-  font-weight: 620;
+  color: var(--bar-accent);
+  font-size: 24px;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 
@@ -232,17 +244,17 @@ mark {
 #actions button:hover { text-decoration-color: var(--bar-ink-2); }
 #actions button:hover .icon { color: var(--bar-ink); }
 
-#masthead :focus-visible { outline-color: var(--bar-red); }
+#masthead :focus-visible { outline-color: var(--bar-accent); }
 
 /* Chosen in the bar: the action wears the proofreader's highlight */
 #actions button[aria-expanded="true"],
 body.single-pane #view-tabs button[aria-selected="true"] {
-  background: var(--bar-wash);
+  background: var(--bar-highlight);
   color: var(--bar-ink);
   text-decoration-color: transparent;
 }
 
-#actions button[aria-expanded="true"] .icon { color: var(--bar-red); }
+#actions button[aria-expanded="true"] .icon { color: var(--bar-accent); }
 
 #view-tabs { display: none; }
 
@@ -425,7 +437,7 @@ body.single-pane #view-tabs button[aria-selected="true"] {
 .sheet-body a {
   color: inherit;
   text-decoration-line: underline;
-  text-decoration-color: var(--red);
+  text-decoration-color: var(--accent);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.18em;
 }
@@ -532,7 +544,7 @@ body.single-pane #view-tabs button[aria-selected="true"] {
   border-bottom-color: var(--ink);
 }
 
-.sheet-body ::selection { background: var(--red-wash); }
+.sheet-body ::selection { background: var(--selection); }
 
 /* ── Dialogs ────────────────────────────────────────────── */
 .modal-overlay {
@@ -589,70 +601,77 @@ body.single-pane #view-tabs button[aria-selected="true"] {
 .modal-body { padding: 0.5rem 1.25rem 1.25rem; }
 
 /* Settings */
+/* A setting is a row like the Guide's: its name on the left, the choices
+   inline on the right with a bullet between them. The chosen one wears the
+   highlighter; a pointer previews it in grey. */
 .setting {
-  border: 0;
-  display: block;
-  margin-bottom: 1rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--rule);
 }
 
-.setting:last-child { margin-bottom: 0; }
+.setting:last-child { border-bottom: none; }
 
-.setting legend,
-.setting-label {
+.setting-label { color: var(--ink-2); }
+
+.choices {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.choices label {
+  position: relative;
+  cursor: pointer;
+}
+
+.choices label + label::before {
+  content: '•' / '';
+  margin: 0 0.5em;
+  color: var(--ink-3);
+}
+
+.choices input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.choices .word {
+  --stroke-colour: transparent;
+  padding: 0 0.15em;
+  color: var(--ink-2);
+  transition: color 0.15s ease-out;
+}
+
+.choices label:hover .word { --stroke-colour: var(--hover); color: var(--ink); }
+
+.choices input:checked + .word {
+  --stroke-colour: var(--highlight);
+  color: var(--ink);
+}
+
+.choices input:focus-visible + .word {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Download */
+.field { display: block; }
+
+.field-label {
   display: block;
   font-size: 14px;
   color: var(--ink-3);
   margin-bottom: 0.4rem;
 }
 
-.segmented {
-  display: flex;
-  border: 1px solid var(--control-line);
-  border-radius: 3px;
-}
-
-.segmented label {
-  flex: 1;
-  position: relative;
-}
-
-.segmented label + label { border-left: 1px solid var(--control-line); }
-
-.segmented input {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.segmented label > span {
-  display: block;
-  padding: 0.45rem 0.6rem;
-  text-align: center;
-  color: var(--ink-2);
-  white-space: nowrap;
-  transition: background-color 0.15s ease-out, color 0.15s ease-out;
-}
-
-.segmented label:hover > span { background: var(--desk); }
-
-.segmented .word {
-  padding: 0.1em 0.3em;
-  border-radius: 2px;
-  transition: background-color 0.15s ease-out;
-}
-
-/* Chosen: the word wears the same wash as selected text */
-.segmented input:checked + span { color: var(--ink); }
-.segmented input:checked + span .word { background: var(--red-wash); }
-
-.segmented input:focus-visible + span {
-  outline: 2px solid var(--red);
-  outline-offset: 2px;
-  position: relative;
-}
-
-/* Save */
 .filename-input-group {
   display: flex;
   align-items: baseline;
@@ -664,7 +683,7 @@ body.single-pane #view-tabs button[aria-selected="true"] {
 }
 
 .filename-input-group:focus-within {
-  outline: 2px solid var(--red);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -813,8 +832,8 @@ body.single-pane .modal-panel {
     --ink-3: #6b6864;
     --rule: #e6e4df;
     --code-ground: #f6f5f2;
-    --red: #c8241b;
-    --red-wash: #f6dad6;
+    --accent: #e8551c;
+    --highlight: rgb(255 181 17 / 0.45);
   }
 
   *, *::before, *::after {

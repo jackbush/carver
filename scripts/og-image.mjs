@@ -1,10 +1,13 @@
 // Regenerates Carver's preview images from the built app: a screenshot of
 // the welcome note in a small window, so the bar's actions read clearly.
 //
-//   .github/cover.jpg  the 3:2 screenshot at 2400×1600 (README header)
+//   .github/cover.jpg  3:2 at 2400×1600 (README header): the window on the
+//                      stage with an even border, two thirds of the bar deep
 //   <--cover path>     the same, for sites that show it larger
-//   public/og.png      1200×630 social preview: the screenshot as a window
-//                      centred on a stage in the hue opposite the wordmark
+//   public/og.png      1200×630 social preview: the window centred on the stage
+//
+// The stage is the hue opposite the wordmark, very dark; the window is
+// rounded and casts a shadow on it.
 //
 // Run with `npm run og` (builds first). Uses the installed Chrome.
 
@@ -18,25 +21,36 @@ import { chromium } from '@playwright/test';
 const ROOT = new URL('..', import.meta.url).pathname;
 const { cover } = parseArgs({ options: { cover: { type: 'string' } } }).values;
 
-// The window the app is shown in: 3:2, as small as it goes while both sides
-// still show (the app goes single-pane below 800px), so everything is large in
-// the image. Large text, and the paged preview, so the proof reads as a page.
-const WINDOW = { width: 840, height: 560 };
+const css = await readFile(resolve(ROOT, 'src/style.css'), 'utf8');
+const wordmark = css.match(/--bar-accent:\s*(#[0-9a-f]{6})/i)[1];
+const barHeight = parseFloat(css.match(/--masthead-h:\s*([\d.]+)px/)[1]);
+const STAGE = `hsl(${(hueOf(wordmark) + 180) % 360} 100% 9%)`;
+const RADIUS = 10;
+const SHADOW = '0 6px 20px rgb(0 0 0 / 0.35), 0 1px 4px rgb(0 0 0 / 0.25)';
+
+// The app is shown in a window as narrow as it goes while both sides still
+// show (it goes single-pane below 800px), so everything is large in the image.
+// Large text, and the paged preview, so the proof reads as a page.
+const WINDOW_WIDTH = 840;
 const SETTINGS = { theme: 'light', textSize: 'large', preview: 'paged' };
 
-const COVER = { width: 2400, height: 1600 };
+// The cover is 3:2 with an even border two thirds of the bar's height (as it
+// appears in the image) all round, so the window is a little wider than 3:2.
+const COVER = { width: 1200, height: 800, scale: 2 };
+const borderShare = ((2 / 3) * barHeight) / WINDOW_WIDTH; // border per px of window width
+const BORDER = (COVER.width * borderShare) / (1 + 2 * borderShare);
+const WINDOW = {
+  width: WINDOW_WIDTH,
+  height: Math.round(((COVER.height - 2 * BORDER) * WINDOW_WIDTH) / (COVER.width - 2 * BORDER)),
+};
 const coverPaths = [resolve(ROOT, '.github/cover.jpg')];
 if (cover) coverPaths.push(resolve(process.env.INIT_CWD ?? '.', cover));
 
-// The social card: the window centred, MARGIN from the top and bottom.
-const SOCIAL = { width: 1200, height: 630 };
+// The social card: the same window, centred, MARGIN from the top and bottom.
+const SOCIAL = { width: 1200, height: 630, scale: 1 };
 const MARGIN = 45;
-const RADIUS = 10;
 
-// The stage is the hue opposite the wordmark's red, kept very dark.
-const css = await readFile(resolve(ROOT, 'src/style.css'), 'utf8');
-const wordmark = css.match(/--bar-red:\s*(#[0-9a-f]{6})/i)[1];
-const STAGE = `hsl(${(hueOf(wordmark) + 180) % 360} 100% 9%)`;
+let editorPadding; // measured once, by paddingBetweenParagraphs()
 
 await build({ root: ROOT, logLevel: 'warn' });
 // Pick a free port and check it serves this build, not some other server.
@@ -52,61 +66,94 @@ try {
   if (served !== built) throw new Error(`${url} is not serving this build`);
 
   browser = await chromium.launch({ channel: 'chrome' });
+  console.log(`Window ${WINDOW.width}×${WINDOW.height}, cover border ${BORDER.toFixed(1)}px, stage ${STAGE} from the wordmark's ${wordmark}`);
 
-  // The 3:2 cover is the window itself, captured at its final size.
-  const coverShot = await capture(COVER.width / WINDOW.width);
+  const coverWidth = COVER.width - 2 * BORDER;
   for (const path of coverPaths) {
     await mkdir(dirname(path), { recursive: true });
-    await writeImage(coverShot, COVER, path);
+    await stage(COVER, coverWidth, path);
   }
 
-  // The social card shows the window smaller; capture it at that size so the
-  // text is rasterised there rather than scaled down.
-  const height = SOCIAL.height - 2 * MARGIN;
-  const width = (height * WINDOW.width) / WINDOW.height;
-  const windowShot = await capture(width / WINDOW.width);
-  const card = await browser.newPage({ viewport: SOCIAL });
-  await card.setContent(`
-    <style>
-      body { margin: 0; width: ${SOCIAL.width}px; height: ${SOCIAL.height}px; display: grid; place-items: center; background: ${STAGE}; }
-      img {
-        display: block; width: ${width}px; height: ${height}px; border-radius: ${RADIUS}px;
-        box-shadow: 0 6px 20px rgb(0 0 0 / 0.35), 0 1px 4px rgb(0 0 0 / 0.25);
-      }
-    </style>
-    <img src="data:image/png;base64,${windowShot.toString('base64')}" alt="">`);
-  await card.evaluate(() => Promise.all([...document.images].map((img) => img.decode())));
-  const ogPath = resolve(ROOT, 'public/og.png');
-  await card.screenshot({ path: ogPath });
-  console.log(`Wrote ${ogPath} (${SOCIAL.width}×${SOCIAL.height}, stage ${STAGE} from the wordmark's ${wordmark})`);
+  const socialHeight = SOCIAL.height - 2 * MARGIN;
+  await stage(SOCIAL, (socialHeight * WINDOW.width) / WINDOW.height, resolve(ROOT, 'public/og.png'));
 } finally {
   await browser?.close();
   await new Promise((done) => server.httpServer.close(done));
 }
 
-// Screenshots the app in the window at the given pixel density.
-async function capture(density) {
+// Opens the app in the window at the given pixel density, with any extra CSS
+// in place from the first paint.
+async function open(density, extraCss = '') {
   const page = await browser.newPage({ viewport: WINDOW, deviceScaleFactor: density, locale: 'en-GB' });
-  await page.addInitScript((settings) => {
+  await page.addInitScript(([settings, css]) => {
     localStorage.clear();
     localStorage.setItem('carver-settings', JSON.stringify(settings));
-  }, SETTINGS);
+    if (css) {
+      document.addEventListener('DOMContentLoaded', () => {
+        const style = document.createElement('style');
+        style.textContent = css;
+        document.head.append(style);
+      });
+    }
+  }, [SETTINGS, extraCss]);
   const res = await page.goto(url, { waitUntil: 'networkidle' });
   if (!res.ok()) throw new Error(`${url}: HTTP ${res.status()}`);
   await page.evaluate(() => document.fonts.ready);
+  return page;
+}
+
+// The markdown's top padding that puts the window's bottom edge in a gap
+// rather than through a paragraph: the least change that pushes the paragraph
+// it would cut out of view, or pulls it fully into view. Measured once, then
+// applied from the first paint, so CodeMirror lays out with it.
+async function paddingBetweenParagraphs() {
+  if (editorPadding !== undefined) return editorPadding;
+  const page = await open(1);
+  editorPadding = await page.evaluate(() => {
+    const scroller = document.querySelector('.cm-scroller');
+    const edge = scroller.getBoundingClientRect().bottom;
+    const current = parseFloat(getComputedStyle(scroller).paddingTop);
+    const cut = [...document.querySelectorAll('.cm-line')].find((line) => {
+      const box = line.getBoundingClientRect();
+      return line.textContent.trim() && box.top < edge && box.bottom > edge;
+    });
+    if (!cut) return current;
+    const box = cut.getBoundingClientRect();
+    const gap = 4;
+    const push = edge - box.top + gap; // move it down, out of view
+    const pull = box.bottom - edge + gap; // move it up, into view
+    return pull < push && current - pull >= 16 ? current - pull : current + push;
+  });
+  await page.close();
+  return editorPadding;
+}
+
+// Screenshots the app in the window at the given pixel density.
+async function capture(density) {
+  const padding = await paddingBetweenParagraphs();
+  const page = await open(density, `.cm-scroller { padding-top: ${padding}px !important; }`);
   const shot = await page.screenshot();
   await page.close();
   return shot;
 }
 
-// Writes a PNG screenshot as the file type its path names.
-async function writeImage(png, size, path) {
-  const page = await browser.newPage({ viewport: { width: size.width, height: size.height } });
-  await page.setContent(`<style>body{margin:0}img{display:block}</style><img src="data:image/png;base64,${png.toString('base64')}">`);
+// Draws the window, `width` px wide, centred on the stage in a `frame`, and
+// writes it as the file type its path names. The window is captured at the
+// density it is shown at, so its text is rasterised at its final size.
+async function stage(frame, width, path) {
+  const height = (width * WINDOW.height) / WINDOW.width;
+  const shot = await capture((width * frame.scale) / WINDOW.width);
+  const page = await browser.newPage({ viewport: { width: frame.width, height: frame.height }, deviceScaleFactor: frame.scale });
+  await page.setContent(`
+    <style>
+      body { margin: 0; width: ${frame.width}px; height: ${frame.height}px; display: grid; place-items: center; background: ${STAGE}; }
+      img { display: block; width: ${width}px; height: ${height}px; border-radius: ${RADIUS}px; box-shadow: ${SHADOW}; }
+    </style>
+    <img src="data:image/png;base64,${shot.toString('base64')}" alt="">`);
   await page.evaluate(() => document.images[0].decode());
   await page.screenshot({ path, ...(path.endsWith('.jpg') ? { type: 'jpeg', quality: 90 } : {}) });
   await page.close();
-  console.log(`Wrote ${path} (${size.width}×${size.height})`);
+  console.log(`Wrote ${path} (${frame.width * frame.scale}×${frame.height * frame.scale})`);
 }
 
 function hueOf(hex) {

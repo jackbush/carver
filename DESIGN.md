@@ -2,8 +2,10 @@
 name: Carver
 description: A markdown editor set as a galley proof. The typescript on one side, the proof sheet on the desk beside it.
 colors:
-  proofreaders-red: "#c8241b"
-  red-wash: "#f6dad6"
+  accent: "#e8551c"
+  highlight: "rgb(255 181 17 / 0.45)"
+  selection: "rgb(255 108 47 / 0.22)"
+  hover: "rgb(20 20 20 / 0.10)"
   desk: "#f2f1ee"
   desk-line: "#dad8d2"
   paper: "#ffffff"
@@ -19,10 +21,12 @@ colors:
   bar-line: "#1d1c1a"
   bar-ink: "#ece9e3"
   bar-ink-2: "#a8a39b"
-  bar-red: "#ef6155"
-  bar-wash: "#4f2420"
-  dark-red: "#ef6155"
-  dark-red-wash: "#4f2420"
+  bar-accent: "#ff6c2f"
+  bar-highlight: "rgb(255 181 17 / 0.22)"
+  dark-accent: "#ff6c2f"
+  dark-highlight: "rgb(255 181 17 / 0.36)"
+  dark-selection: "rgb(255 108 47 / 0.30)"
+  dark-hover: "rgb(255 255 255 / 0.10)"
   dark-desk: "#161514"
   dark-desk-line: "#2e2c29"
   dark-paper: "#1f1e1c"
@@ -41,8 +45,8 @@ colors:
 typography:
   wordmark:
     fontFamily: "'Source Serif 4', Georgia, serif"
-    fontSize: "17px"
-    fontWeight: 620
+    fontSize: "24px"
+    fontWeight: 700
     letterSpacing: "-0.01em"
   title:
     fontFamily: "'Source Serif 4', Georgia, serif"
@@ -52,10 +56,6 @@ typography:
   ui:
     fontFamily: "'Source Serif 4', Georgia, serif"
     fontSize: "15px"
-    fontWeight: 400
-  label:
-    fontFamily: "'Source Serif 4', Georgia, serif"
-    fontSize: "14px"
     fontWeight: 400
   toolbar-label:
     fontFamily: "'Source Serif 4', Georgia, serif"
@@ -123,8 +123,8 @@ components:
     rounded: "{rounded.sm}"
     padding: "0.4rem 0.65rem"
   action-open:
-    backgroundColor: "{colors.red-wash}"
-    textColor: "{colors.ink}"
+    backgroundColor: "{colors.bar-highlight}"
+    textColor: "{colors.bar-ink}"
     rounded: "{rounded.sm}"
     padding: "0.4rem 0.65rem"
   action-phone:
@@ -137,8 +137,8 @@ components:
     rounded: "{rounded.sm}"
     padding: "0.4rem 0.65rem"
   view-tab-selected:
-    backgroundColor: "{colors.red-wash}"
-    textColor: "{colors.ink}"
+    backgroundColor: "{colors.bar-highlight}"
+    textColor: "{colors.bar-ink}"
   close-button:
     textColor: "{colors.ink-3}"
     rounded: "{rounded.sm}"
@@ -157,17 +157,19 @@ components:
     padding: "0.45rem 1rem"
   button-primary-hover:
     backgroundColor: "{colors.ink-strong}"
-  segmented-option:
+  setting-row:
     textColor: "{colors.ink-2}"
-    rounded: "{rounded.md}"
-    padding: "0.45rem 0.6rem"
-  segmented-option-selected:
+    typography: "{typography.ui}"
+    padding: "0.6rem 0"
+  setting-choice:
+    textColor: "{colors.ink-2}"
+    padding: "0 0.15em"
+  setting-choice-hover:
+    backgroundColor: "{colors.hover}"
     textColor: "{colors.ink}"
-  segmented-word-selected:
-    backgroundColor: "{colors.red-wash}"
+  setting-choice-selected:
+    backgroundColor: "{colors.highlight}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.sm}"
-    padding: "0.1em 0.3em"
   filename-field:
     backgroundColor: "{colors.paper}"
     textColor: "{colors.ink}"
@@ -190,49 +192,54 @@ components:
 
 **Creative North Star: "The Galley Proof"**
 
-Carver is a proofing desk. On one side lies the typescript: Courier Prime on plain paper, where the markdown shows. On the other is a photocopier-grey desk with a white sheet set in Source Serif 4, which is how the words will print. The chrome stays out of the way. It is a thin ink band across the top (and along the bottom on phones) that frames both panes evenly, set in the same serif as the proof, where each action is a plain word with a thin line icon beside it, and there are no pills or coloured buttons. The only colour anywhere is proofreader's red: as ink where an editor's pen would go (the caret, under a link, around focus, the icon of the open action) and in the red "Carver" wordmark, and as the proofreader's highlight, the red wash that marks a text selection and anything chosen.
+Carver is a proofing desk. On one side lies the typescript: Courier Prime on plain paper, where the markdown shows. On the other is a photocopier-grey desk with a white sheet set in Source Serif 4, which is how the words will print. The chrome stays out of the way. It is a thin ink band across the top (and along the bottom on phones) that frames both panes evenly, set in the same serif as the proof, where each action is a plain word with a thin line icon beside it, and there are no pills or coloured buttons. The only colour comes from two riso inks, bright and fun but calm, never fluorescent. Riso Orange marks where an editor's pen would go (the caret, under a link, around focus, the icon of the open action) and sets the "Carver" wordmark; a faint wash of it marks selected text. Sunflower is the highlighter: a translucent stroke across the lower part of the words, for `==highlight==` and for anything chosen.
 
-The density is low and the hierarchy is typographic. Everything outside the proof is set at almost one size and one weight, so the large title on the sheet is the loudest thing on screen. Depth is physical, not decorative: sheets and panels sit on the desk with a soft, low shadow, the way paper does. After dark, the whole desk changes with it: grounds go low-glare, ink goes warm and light, and the red lifts. Print is always light.
+The density is low and the hierarchy is typographic. Everything outside the proof is set at almost one size and one weight, so the large title on the sheet is the loudest thing on screen. Depth is physical, not decorative: sheets and panels sit on the desk with a soft, low shadow, the way paper does. After dark, the whole desk changes with it: grounds go low-glare, ink goes warm and light, the orange brightens and the highlighter thins. Print is always light.
 
 The sheet is the signature. The paper (A4 or US Letter) comes from the writer's locale and sets both previews. In Continuous mode the proof is one long sheet at that paper's width and margins, with no breaks. In Paged mode it is split into real pages at true paper size, laid out at full size, scaled to fit the desk, numbered with oldstyle folios, and printed one-to-one.
 
 **Key Characteristics:**
-- A grey desk, white sheets and near-black ink, with a single red accent; a matching dark desk under the Appearance setting.
+- A grey desk, white sheets and near-black ink, with two riso inks (Orange for marks, Sunflower for the highlighter); a matching dark desk under the Appearance setting.
 - One serif for both the proof and the chrome; a typewriter face for the typescript.
 - An ink band for the bar, framing a grey desk and the white typescript alike.
-- Actions are words, each with a thin line icon. Chosen state wears the red wash of a text selection, never a red fill or a red rule.
+- Actions are words, each with a thin line icon. Chosen state wears the Sunflower highlight, never a fill, a rule or a border.
 - Corners are nearly square (2 to 3px). Shadows are soft and offset downward.
 - Real pagination at the writer's paper size, scaled, never reflowed.
 
 ## Colors
 
-The palette is greyscale paper and ink with one red, so it reads like a marked-up proof and not like an app. Every colour is a custom property with a light set and a dark set; the dark set applies to the whole app. The app follows the system appearance until the writer picks one in Settings, and then remembers that choice.
+The palette is greyscale paper and ink with two riso inks, so it reads like a marked-up proof and not like an app: Orange for marks, Sunflower for the highlighter. Both are riso colours, bright but calm; neither is fluorescent. Every colour is a custom property with a light set and a dark set; the dark set applies to the whole app. The app follows the system appearance until the writer picks one in Settings, and then remembers that choice.
 
 ### Primary
-- **Proofreader's Red** (proofreaders-red; dark-red after dark): the caret (a 2px line drawn at 80% of the line height, centred, blinking slowly on and off), the focus ring on paper (2px outline, 2px offset), link underlines on the proof, and the icon of the open bar action. It is never a fill on a control, never a state rule and never body text.
-- **Bar Red** (bar-red, the same in both appearances): proofreader's red lifted to read on the ink band. It is the wordmark and the focus ring inside the bar.
-- **Red Wash** (red-wash; dark-red-wash): the proofreader's highlight. It is the selection background in the typescript and on the proof, and the one mark of anything chosen: the open bar action, the selected Write/Proof tab, and the chosen word in a settings control. Text on it is always ink.
+- **Orange** (accent; dark-accent after dark): marks on paper. The caret (a 2px line drawn at 80% of the line height, centred, blinking slowly on and off), the focus ring on paper (2px outline, 2px offset), link underlines on the proof, and the filename field's focus ring. In light it is deepened for paper (3.6:1 on white); after dark it is full Riso Orange. It is never a fill on a control, never a state ground and never body text.
+- **Riso Orange** (bar-accent, the same in both appearances): Orange as it reads on the ink band (6:1 on the bar). It is the wordmark, the icon of the open bar action and the focus ring inside the bar. The preview images' stage is computed from it: the opposite hue at 100% saturation and 9% lightness (a deep blue, hsl(198 100% 9%)).
+- **Selection** (selection; dark-selection): a faint orange wash behind selected text, in the typescript and on the proof. It is deliberately distinct from a highlight, so selecting highlighted text still reads as a selection.
+
+### Secondary
+- **Sunflower** (highlight; dark-highlight): the highlighter. Translucent Riso Sunflower: a stroke for `==highlight==` on the proof and in the Guide and under the chosen word in Settings, and a plain box around highlighted characters in the typescript. Text on it is always ink. Print forces the light value, as it does Orange.
+- **Bar Sunflower** (bar-highlight, the same in both appearances): Sunflower thinned for the ink band. It is the chip behind the open bar action and the selected Write/Proof tab, with bar-ink text.
+- **Hover** (hover; dark-hover): a grey stroke, the highlight a pointer previews on a settings choice before it is chosen.
 
 ### Neutral
 - **Ink Band** (bar / dark-bar): the masthead and the narrow-screen bottom toolbar, one near-black band that frames both panes evenly. After dark it goes darker than the desk. The browser `theme-color` follows it (read from the masthead's computed background).
 - **Bar Line** (bar-line / dark-bar-line): the 1px hairline under the masthead and above the bottom toolbar. In light it is the bar itself, so the band reads as one solid edge; after dark it is the desk line.
 - **Bar Ink** (bar-ink / dark-bar-ink): action words on the bar, and an action's icon on hover.
 - **Bar Ink 2** (bar-ink-2 / dark-bar-ink-2): quiet text on the bar at 6:1 or above: the word count, action icons at rest, the hover underline, and the unselected Write/Proof tabs.
-- **Photocopier Desk** (desk / dark-desk): the proof pane behind the sheets, and the hover fill on buttons and segmented options. It is never the bar.
+- **Photocopier Desk** (desk / dark-desk): the proof pane behind the sheets, and the hover fill on buttons. It is never the bar.
 - **Desk Line** (desk-line / dark-desk-line): the 1px hairlines between the panes and around floating panels.
 - **Paper** (paper / dark-paper): proof sheets, panels, the typescript ground and secondary buttons.
 - **Ink** (ink / dark-ink): text on the desk and on paper, the primary button fill, and the heavy rule under table headers. **Ink Strong** (ink-strong / dark-ink-strong) is only the primary button's hover.
-- **Ink 2** (ink-2 / dark-ink-2): secondary text on paper, such as blockquotes, unselected segmented options and Guide descriptions.
-- **Ink 3** (ink-3 / dark-ink-3): quiet text on desk and paper at 4.5:1 or above: setting legends, the Close icon, folios, list markers, bullet discs and the asterism.
+- **Ink 2** (ink-2 / dark-ink-2): secondary text on paper, such as blockquotes, setting names, unchosen setting choices and Guide descriptions.
+- **Ink 3** (ink-3 / dark-ink-3): quiet text on desk and paper at 4.5:1 or above: the bullets between setting choices, the filename extension, the Close icon, folios, list markers, bullet discs and the asterism.
 - **Syntax Dim** (syntax-dim / dark-syntax-dim): markdown punctuation and URLs in the typescript; visible but quiet.
-- **Rule** (rule / dark-rule): light rules between table rows on the proof and in the Guide.
-- **Control Line** (control-line / dark-control-line): 1px strokes around segmented controls, buttons and the filename field, plus the thin scrollbars.
+- **Rule** (rule / dark-rule): light rules between table rows on the proof, between rows in the Guide and between settings.
+- **Control Line** (control-line / dark-control-line): 1px strokes around buttons and the filename field, plus the thin scrollbars.
 - **Code Ground** (code-ground / dark-code-ground): the faint ground under code on the proof and in the typescript. In the typescript it is drawn on a CodeMirror layer beneath the selection layer, under inline code and under every line of a code block, fences included, so an unclosed block visibly runs on to the end and a selection always shows over code.
 
 ### Named Rules
-**The Red Pen Rule.** Red appears only where a proofreader's pen would: as ink on the caret, links, focus and the open action's icon, and as the wash on a selection or a choice. The one exception is the wordmark. If an element is red for any other reason, it is wrong.
+**The Two Inks Rule.** Orange is a mark, Sunflower is a highlighter. Orange appears only where a proofreader's pen would (the caret, links, focus, the open action's icon) plus the wordmark, and faintly behind selected text. Sunflower appears only as the highlighter stroke: on `==highlight==` and on anything chosen. If an element is orange or yellow for any other reason, it is wrong.
 
-**The Proofreader's Highlight Rule.** One mechanic marks "chosen": the red wash, exactly as a text selection. On the ink band it takes its dark-mode value (bar-wash) in both themes; the open bar action and the selected Write/Proof tab wear it as a chip (2px corner) with ink text; the chosen settings option wears it on its word alone, hugging the word like selected text. Chosen state is never a red fill, a red underline or inset rule, a coloured pill or bold text.
+**The Highlighter Rule.** One mechanic marks "chosen": the Sunflower highlight. In Settings it is the highlighter stroke under the chosen word, the same stroke as `==highlight==`; on the ink band, where a stroke would be lost, the open bar action and the selected Write/Proof tab wear Bar Sunflower as a chip (2px corner) with bar-ink text. Chosen state is never a solid fill, an underline or inset rule, a border, a coloured pill or bold text, and it is never the selection colour.
 
 **The Ink Band Rule.** The masthead and the phone toolbar are one ink band that frames both panes evenly. The desk never doubles as the bar. The band sits above the panel scrim so it stays clear while a panel is open.
 
@@ -247,10 +254,11 @@ The palette is greyscale paper and ink with one red, so it reads like a marked-u
 **Character:** The proof is set as a book: optical sizing, kerning, hanging punctuation, oldstyle folios and small caps. The typescript is set as a manuscript off a typewriter. The chrome uses the same serif as the proof, so the interface reads as part of the page.
 
 ### Hierarchy
-- **Wordmark** (620, 17px, -0.01em, bar-red): plain "Carver" in the masthead. It is hidden on narrow screens.
+- **Wordmark** (700, 24px, -0.01em, bar-accent): plain "Carver" in the masthead, the largest and heaviest word in the chrome. It is hidden on narrow screens.
+- **Field label** (400, 14px, ink-3): the Download panel's "File name", above its field.
 - **Title** (620, 18px, -0.01em): panel titles.
-- **UI** (400, 15px): every action word, setting option, button and the word count. Narrow-screen Write/Proof tabs are 16px.
-- **Label** (400, 14px, ink-3): setting legends and field labels. The Guide's syntax samples use Courier Prime at 14px.
+- **UI** (400, 15px): every action word, setting name and choice, field label, button and the word count. Narrow-screen Write/Proof tabs are 16px.
+- **Guide samples** (Courier Prime 400, 14px): the syntax samples in the Guide.
 - **Toolbar label** (400, 13px): action words under their icons in the phone toolbar.
 - **Proof display** (600, 2.15em, line-height 1.1, -0.018em): h1 on the sheet. It balances its wrap.
 - **Proof headline** (600, 1.4em, line-height 1.25): h2.
@@ -266,7 +274,7 @@ The palette is greyscale paper and ink with one red, so it reads like a marked-u
 
 ## Layout
 
-On desktop the screen is split into two equal panes under a 48px ink-band masthead (red wordmark and word count on the left, actions on the right). The typescript pane is paper, with clamp(1.5rem, 5vw, 4rem) inline padding and 3rem block padding. The proof pane is the desk, with a 1px desk-line on its left edge, 2.5rem above and 4rem below the sheets, and a 3rem side gutter set as the frame's width rather than the scroller's padding (Chrome cannot drag-select scaled text inside a side-padded scroller).
+On desktop the screen is split into two equal panes under a 48px ink-band masthead (orange wordmark and, vertically centred beside it, the word count on the left; actions on the right). The typescript pane is paper, with clamp(1.5rem, 5vw, 4rem) inline padding and 3rem block padding. The proof pane is the desk, with a 1px desk-line on its left edge, 2.5rem above and 4rem below the sheets, and a 3rem side gutter set as the frame's width rather than the scroller's padding (Chrome cannot drag-select scaled text inside a side-padded scroller).
 
 **Paper:** A4 (210×297mm) or US Letter (215.9×279.4mm), chosen silently from the browser locale (Letter for US, CA, MX, PH, CL, CO, VE, PR; A4 elsewhere). There is no paper setting. The margin is 0.135× the paper width on top and sides, and 1.3× that at the foot.
 
@@ -299,7 +307,7 @@ Depth is physical. Only paper casts a shadow on the desk. Chrome (the ink-band m
 
 ## Shapes
 
-The shapes are rectangular and paper-like. Proof sheets have square corners (0). Controls and panels have very slightly softened corners: 2px on actions and Close, and 3px on buttons, segmented controls, the filename field and panels. Strokes are 1px (control-line, desk-line or bar-line). Chosen-state chips share the 2px corner of the actions; the settings word's wash has a 2px corner too. Icons are drawn with a 1.5 stroke and round caps and joins on a 24-unit grid. The only filled round shapes are the drawn bullet discs on proof lists (0.3em circles in ink-3).
+The shapes are rectangular and paper-like. Proof sheets have square corners (0). Controls and panels have very slightly softened corners: 2px on actions and Close, and 3px on buttons, the filename field and panels. Strokes are 1px (control-line, desk-line, bar-line or rule). Chosen-state chips on the bar share the 2px corner of the actions; the highlighter stroke has no corner, and a settings choice's focus outline has a 2px one. Icons are drawn with a 1.5 stroke and round caps and joins on a 24-unit grid. The only filled round shapes are the drawn bullet discs on proof lists (0.3em circles in ink-3).
 
 ## Components
 
@@ -307,27 +315,32 @@ The shapes are rectangular and paper-like. Proof sheets have square corners (0).
 The masthead actions (Open, Download, Print, Guide, Settings) are words at 15px in bar-ink on the ink band, each with a 16px line icon (1.5 stroke, round caps and joins) 0.4rem before it, padded 0.4rem 0.65rem, with no background and no border at rest.
 - **Icon:** bar-ink-2 at rest, bar-ink on hover.
 - **Hover:** a 1px bar-ink-2 underline fades in (text-decoration-color, 0.15s ease-out, 0.35em offset).
-- **Open (aria-expanded):** the action wears the highlight as a chip (2px corner): bar-wash (the dark-mode red wash, #4f2420, in both themes, so the mark reads the same on the ink band) with bar-ink text and no underline, and its icon turns bar-red. Open and Print close any open panel before they act.
-- **Focus:** a 2px bar-red outline at 2px offset.
+- **Open (aria-expanded):** the action wears Bar Sunflower as a chip (2px corner), the same in both themes, with bar-ink text and no underline, and its icon turns Riso Orange. Open and Print close any open panel before they act.
+- **Focus:** a 2px Riso Orange (bar-accent) outline at 2px offset.
 - **Phone toolbar:** the same band along the bottom; the icon sits above a 13px word (0.15rem gap), padded 0.3rem 0.5rem.
-- **Write/Proof tabs (narrow):** words only, 16px, bar-ink-2 at rest. The selected tab wears the same bar-wash chip with bar-ink text.
+- **Write/Proof tabs (narrow):** words only, 16px, bar-ink-2 at rest. The selected tab wears the same Bar Sunflower chip with bar-ink text.
 
 ### Buttons
 Buttons appear only inside panels.
 - **Shape:** slightly softened corners (3px), 1px control-line stroke, padded 0.45rem 1rem.
 - **Default:** a paper ground. Hover fills with desk (0.15s ease-out).
-- **Primary:** an ink fill with paper text. Hover goes to ink-strong. Primary is ink, never red.
+- **Primary:** an ink fill with paper text. Hover goes to ink-strong. Primary is ink, never orange.
 - **Close:** an 18px cross icon alone (aria-label "Close"), ink-3, ink on hover, padded 0.35rem. It is the only control without a word.
 
-### Segmented control
-The settings selector, in order: Text size (Small / Medium / Large), Preview (Continuous / Paged), Appearance (Light / Dark). It is a row of equal cells with a 1px control-line outline, 1px dividers and a 3px corner.
-- **Option:** ink-2 text, centred, padded 0.45rem 0.6rem. Hover fills with desk.
-- **Selected:** ink text, and the option's word wears the red wash (0.1em 0.3em padding, 2px corner), hugging the word like selected text rather than filling the cell.
-- **Focus:** a 2px red outline at 2px offset on the option.
+### Setting rows
+Settings is a short list of rows set like the Guide's, in order: Text size (Small • Medium • Large), Preview (Continuous • Paged), Appearance (Light • Dark). Each row is a radio group with no box, no border and no cells.
+- **Row:** the setting's name on the left in ink-2, the choices inline on the right, baseline-aligned, 1.5rem apart at least, with 0.6rem above and below. A 1px rule separates rows; the last has none.
+- **Choices:** words in ink-2 (0.15em side padding), separated by a "•" in ink-3 with 0.5em either side, hidden from assistive tech (empty alt text on the generated content). The radio itself is visually hidden.
+- **Hover:** the word previews the highlighter stroke in grey (hover) and goes to ink.
+- **Chosen:** the word goes to ink and wears the Sunflower highlighter stroke, the same stroke as `==highlight==`.
+- **Focus:** a 2px Orange outline at 2px offset around the word (2px corner).
+
+### Highlighter
+One shared stroke serves the serif text (`==highlight==` on the proof and in the Guide, and the settings choices): a band of colour 0.58em tall whose top sits 1px above the lowercase letters (0.576em below the top of Source Serif 4's 1.38em character box), with no corner. In the typescript the markdown is highlighted conventionally instead: a plain box exactly around the characters, 1px larger on each side. Each user sets only the stroke's colour: Sunflower for a highlight or a chosen word, grey for a hovered choice, transparent at rest. Never restyle the band per user; change its colour.
 
 ### Inputs / Fields
 - **Filename field:** a 1px control-line box with a 3px corner, set in Courier Prime at 15px (16px under 800px to prevent iOS zoom). The `.md` extension is shown in ink-3 and is not selectable.
-- **Focus:** a 2px red outline at 2px offset on the whole group.
+- **Focus:** a 2px Orange outline at 2px offset on the whole group.
 
 ### Panels
 Settings, Download and Guide are one width (420px): paper panels hung 8px below the bar at the right, with a 1px desk-line border, a 3px corner and the panel shadow. The header holds an 18px title on the left and the Close icon on the right. Only one panel is open at a time; opening one closes the other. All three are modal: scrim, focus trap, Escape or a click outside to close, and focus returned to the trigger.
@@ -336,35 +349,38 @@ Settings, Download and Guide are one width (420px): paper panels hung 8px below 
 Paper with the sheet shadow, set in proof typography.
 - **Section break:** an asterism, three ink-3 asterisks separated by em spaces, centred with 1.6em space above and below.
 - **Lists:** unordered items use drawn ink-3 discs (0.3em, at 0.95em into the indent), not glyph bullets. Ordered markers are ink-3 oldstyle numerals.
-- **Links:** text in ink with a 1px red underline at a 0.18em offset.
-- **Highlight (`==text==`):** the red wash as a highlighter stroke across the lower half of the words (`--highlighter`, 55% to 92% of the line box, 0.08em side padding), on the proof, in the Guide, and in the typescript, where the band covers the words but not the `==` marks and is drawn on the ground layer beneath the selection. The welcome heading highlights "Carver". Printing uses the light wash.
+- **Links:** text in ink with a 1px Orange underline at a 0.18em offset.
+- **Highlight (`==text==`):** the Sunflower highlighter stroke (0.08em side padding) on the proof and in the Guide. In the typescript, a plain Sunflower box around the highlighted characters (not the `==` marks), 1px larger on each side, drawn on the ground layer beneath the selection. The welcome heading highlights "Carver". Printing uses the light Sunflower.
 - **Blockquote:** italic ink-2 with a 1.6em indent and no rule. Emphasis inside a blockquote switches back to roman.
 - **Code block:** Courier Prime at 0.86em on code-ground, padded 0.9em 1.1em, square.
 - **Tables:** tabular lining numerals at 0.92em, rule hairlines between rows, and an ink rule under the header.
 - **Folio:** centred oldstyle page number in ink-3 at 0.8em (paged mode only).
 
 ### Typescript
-A CodeMirror surface on paper with a 68ch centred measure and 40vh of run-out at the bottom. The caret and selection are drawn on CodeMirror's own layers (`src/modules/proof-selection.js`) from its own geometry: the caret is a 2px red line at 80% of the line height, centred where CodeMirror places it, so it is the same on empty lines and beside text, blinking slowly (1.6s); a selection piece that covers one line grows to the full line height, so short and long selections look alike. The selection is the red wash. The scrollbar is thin.
+A CodeMirror surface on paper with a 68ch centred measure and 40vh of run-out at the bottom. The caret and selection are drawn on CodeMirror's own layers (`src/modules/proof-selection.js`) from its own geometry: the caret is a 2px Orange line at 80% of the line height, centred where CodeMirror places it, so it is the same on empty lines and beside text, blinking slowly (1.6s); a selection piece that covers one line grows to the full line height, so short and long selections look alike. The selection is the faint orange wash. The scrollbar is thin.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep proofreader's red to the wordmark, caret, links, focus and the open action's icon, and the red wash to selections and choices.
-- **Do** show chosen state with the red wash under ink text: a chip on bar actions and tabs, the word alone in settings.
+- **Do** keep Orange to the wordmark, caret, links, focus and the open action's icon (and, faintly, selected text), and Sunflower to highlights and choices.
+- **Do** show chosen state with Sunflower under ink: the highlighter stroke under the chosen word in settings, a Bar Sunflower chip on bar actions and tabs.
 - **Do** keep the masthead and phone toolbar one ink band above the scrim, with `theme-color` following it.
 - **Do** give every action its plain word in Source Serif 4, with a 16px line icon (1.5 stroke, round caps) beside it on desktop and above it on phones.
 - **Do** derive page geometry from the paper's mm dimensions (margin = 0.135 × paper width, foot 1.3×) in both previews.
 - **Do** lay paged proofs out at full size and scale them with a transform.
 - **Do** use the sheet shadow only on paper and the panel shadow only on floating panels.
 - **Do** mark section breaks with the asterism and list items with drawn discs in ink-3.
+- **Do** set each setting as a row: name left in ink-2, choices right with a • between, a rule between rows.
 - **Do** switch the whole app with Appearance, and print light.
 
 ### Don't:
 - **Don't** show an icon without its word. Close is the only exception, and it carries aria-label "Close".
-- **Don't** show state with a red underline, an inset rule, a pill, a solid red fill or bold text. The wash is the only state ground.
+- **Don't** show state with an underline, an inset rule, a border, a pill, a solid fill or bold text. The Sunflower highlight is the only state ground.
+- **Don't** use the selection colour for chosen state, or Sunflower for selection.
+- **Don't** put settings in bordered segmented controls, boxes or cells.
 - **Don't** use the desk as the bar colour.
-- **Don't** fill a button with red. Primary is ink.
+- **Don't** fill a button with Orange or Sunflower. Primary is ink.
 - **Don't** round sheets, or round controls beyond 3px.
 - **Don't** scale paged proofs with CSS zoom or re-wrap them to fit the window.
 - **Don't** add a running head, stamp or label to the proof. Only the folio sits outside the text.
-- **Don't** add a second accent colour or a second reading style.
+- **Don't** add a third ink, use fluorescent or neon colours, or add a second reading style.

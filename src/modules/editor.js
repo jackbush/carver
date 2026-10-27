@@ -24,19 +24,19 @@ function buildTheme(isDark) {
       paddingBottom: '40vh',
     },
     '.cm-cursor': {
-      borderLeftColor: 'var(--red)',
+      borderLeftColor: 'var(--accent)',
       borderLeftWidth: '2px',
     },
     '.cm-selectionBackground': {
-      background: 'var(--red-wash) !important',
+      background: 'var(--selection) !important',
     },
     '.cm-focused .cm-selectionBackground': {
-      background: 'var(--red-wash) !important',
+      background: 'var(--selection) !important',
     },
     '.cm-line': { padding: '0' },
     '.cm-codeBlock, .cm-inlineCode': { background: 'var(--code-ground)' },
     '.cm-inlineCode': { borderRadius: '2px' },
-    '.cm-highlight': { background: 'var(--highlighter)' },
+    '.cm-highlight': { background: 'var(--highlight)' },
     '&.cm-focused': { outline: 'none' },
   }, { dark: isDark });
 }
@@ -84,7 +84,7 @@ const highlightSyntax = {
 
 // Code sits on the code ground: every line of a code block, fences included
 // (so a block left unclosed visibly runs on to the end of the document), and
-// each run of inline code. Highlighted text gets its band here too. Grounds
+// each run of inline code. Highlighted text gets its box here too. Grounds
 // are drawn on their own layer beneath the selection layer, so a selection
 // stays visible over them.
 function groundMarkers(view) {
@@ -100,11 +100,16 @@ function groundMarkers(view) {
       to: range.to,
       enter(node) {
         if (node.name === 'Highlight') {
-          // The band covers the words, not the == marks around them.
+          // A plain box around the highlighted characters, not the == marks,
+          // 1px larger on each side.
           const open = node.node.firstChild;
           const close = node.node.lastChild;
           const range = EditorSelection.range(open ? open.to : node.from, close ? close.from : node.to);
-          if (!range.empty) markers.push(...RectangleMarker.forRange(view, 'cm-highlight', range));
+          if (!range.empty) {
+            for (const m of RectangleMarker.forRange(view, 'cm-highlight', range)) {
+              markers.push(new RectangleMarker(m.className, m.left - 1, m.top - 1, m.width + 2, m.height + 2));
+            }
+          }
           return;
         }
         if (node.name === 'InlineCode') {
