@@ -36,7 +36,6 @@ function buildTheme(isDark) {
     '.cm-line': { padding: '0' },
     '.cm-codeBlock, .cm-inlineCode': { background: 'var(--code-ground)' },
     '.cm-inlineCode': { borderRadius: '2px' },
-    '.cm-highlight': { background: 'var(--highlight)' },
     '&.cm-focused': { outline: 'none' },
   }, { dark: isDark });
 }
@@ -58,35 +57,10 @@ const highlighting = syntaxHighlighting(HighlightStyle.define([
   { tag: tags.url, color: 'var(--syntax-dim)', fontStyle: 'italic' },
 ]));
 
-// ==Highlight== in the typescript, parsed like ~~strikethrough~~ (the proof
-// renders it with markdown-it-mark).
-const HighlightDelim = { resolve: 'Highlight', mark: 'HighlightMark' };
-const PUNCTUATION = /[\p{P}\p{S}]/u;
-const highlightSyntax = {
-  defineNodes: [{ name: 'Highlight' }, { name: 'HighlightMark', style: tags.processingInstruction }],
-  parseInline: [{
-    name: 'Highlight',
-    parse(cx, next, pos) {
-      if (next !== 61 /* = */ || cx.char(pos + 1) !== 61 || cx.char(pos + 2) === 61) return -1;
-      const before = cx.slice(pos - 1, pos);
-      const after = cx.slice(pos + 2, pos + 3);
-      const spaceBefore = /\s|^$/.test(before);
-      const spaceAfter = /\s|^$/.test(after);
-      const punctBefore = PUNCTUATION.test(before);
-      const punctAfter = PUNCTUATION.test(after);
-      return cx.addDelimiter(HighlightDelim, pos, pos + 2,
-        !spaceAfter && (!punctAfter || spaceBefore || punctBefore),
-        !spaceBefore && (!punctBefore || spaceAfter || punctAfter));
-    },
-    after: 'Emphasis',
-  }],
-};
-
 // Code sits on the code ground: every line of a code block, fences included
 // (so a block left unclosed visibly runs on to the end of the document), and
-// each run of inline code. Highlighted text gets its box here too. Grounds
-// are drawn on their own layer beneath the selection layer, so a selection
-// stays visible over them.
+// each run of inline code. Grounds are drawn on their own layer beneath the
+// selection layer, so a selection stays visible over them.
 function groundMarkers(view) {
   const content = view.contentDOM.getBoundingClientRect();
   const scroller = view.scrollDOM.getBoundingClientRect();
@@ -99,19 +73,6 @@ function groundMarkers(view) {
       from: range.from,
       to: range.to,
       enter(node) {
-        if (node.name === 'Highlight') {
-          // A plain box around the highlighted characters, not the == marks,
-          // 1px larger on each side.
-          const open = node.node.firstChild;
-          const close = node.node.lastChild;
-          const range = EditorSelection.range(open ? open.to : node.from, close ? close.from : node.to);
-          if (!range.empty) {
-            for (const m of RectangleMarker.forRange(view, 'cm-highlight', range)) {
-              markers.push(new RectangleMarker(m.className, m.left - 1, m.top - 1, m.width + 2, m.height + 2));
-            }
-          }
-          return;
-        }
         if (node.name === 'InlineCode') {
           const range = EditorSelection.range(node.from, node.to);
           markers.push(...RectangleMarker.forRange(view, 'cm-inlineCode', range));
@@ -141,7 +102,7 @@ const grounds = layer({
   },
 });
 
-export function createEditor(container, content, onChange) {
+export function createEditor(container, content, onChange, onSelect) {
   const themeCompartment = new Compartment();
   const initialTheme = buildTheme(false);
 
@@ -155,12 +116,13 @@ export function createEditor(container, content, onChange) {
         proofSelection(),
         // Registered after the selection: CodeMirror stacks later layers further back.
         grounds,
-        markdown({ extensions: [highlightSyntax] }),
+        markdown(),
         highlighting,
         themeCompartment.of(initialTheme),
         EditorView.contentAttributes.of({ 'aria-label': 'Markdown editor', 'aria-multiline': 'true' }),
         EditorView.updateListener.of(update => {
           if (update.docChanged) onChange(update.state.doc.toString());
+          else if (update.selectionSet) onSelect();
         }),
       ],
     }),

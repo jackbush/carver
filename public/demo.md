@@ -1,4 +1,4 @@
-# This is ==Carver==.
+# This is Carver.
 
 You write. It stays. Nobody else sees it.
 
@@ -34,7 +34,7 @@ Things that don't need an order:
 
 ### Emphasis
 
-Wrap words in `**double asterisks**` for **bold**, `*single*` for *italic*, `~~tildes~~` to ~~strike them out~~, and `==equals signs==` to ==highlight== them. While you write, the markdown fades back so you see the shape of the sentence, not the scaffolding.
+Wrap words in `**double asterisks**` for **bold**, `*single*` for *italic*, and `~~tildes~~` to ~~strike them out~~. While you write, the markdown fades back so you see the shape of the sentence, not the scaffolding.
 
 ### Blockquotes
 

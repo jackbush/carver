@@ -45,12 +45,65 @@ test.describe('Editor → Preview rendering', () => {
     await page.evaluate(() => localStorage.clear());
   });
 
-  test('==text== is highlighted on the proof and in the typescript', async ({ page }) => {
-    await page.addInitScript(() => localStorage.setItem('carver-content', 'This is ==Carver==.'));
+  test('text selected in the typescript is highlighted on the proof', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('carver-content', 'This is **Carver**.'));
     await openApp(page);
 
-    await expect(page.locator('#preview mark')).toHaveText('Carver');
-    await expect(page.locator('.cm-highlight')).toHaveCount(1);
+    // Select "Carver" in the source, inside the ** marks.
+    await page.locator('.cm-content').click();
+    await page.keyboard.press('ControlOrMeta+Home');
+    for (let i = 0; i < 10; i++) await page.keyboard.press('ArrowRight');
+    for (let i = 0; i < 6; i++) await page.keyboard.press('Shift+ArrowRight');
+
+    // The stroke is redrawn a frame after each keystroke; wait for it to cover the word.
+    const mark = page.locator('#preview .proof-mark');
+    const strong = await page.locator('#preview strong').boundingBox();
+    await expect.poll(async () => {
+      const box = await mark.boundingBox();
+      return box && Math.abs(box.x + box.width / 2 - (strong.x + strong.width / 2));
+    }).toBeLessThan(2);
+    await expect(mark).toHaveCount(1);
+
+    await page.keyboard.press('ArrowRight');
+    await expect(mark).toHaveCount(0);
+
+    await page.evaluate(() => localStorage.clear());
+  });
+
+  test('text selected on the proof selects its source in the typescript', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('carver-content', 'This is **Carver**.'));
+    await openApp(page);
+
+    // Drag across "Carver" on the proof.
+    const strong = await page.locator('#preview strong').boundingBox();
+    const y = strong.y + strong.height / 2;
+    await page.mouse.move(strong.x + 1, y);
+    await page.mouse.down();
+    await page.mouse.move(strong.x + strong.width - 1, y, { steps: 5 });
+    await page.mouse.up();
+
+    // The typescript's selection covers "Carver" and not the ** around it.
+    const word = await page.evaluate(() => {
+      const line = document.querySelector('.cm-line');
+      const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        const i = node.data.indexOf('Carver');
+        if (i === -1) continue;
+        const range = document.createRange();
+        range.setStart(node, i);
+        range.setEnd(node, i + 6);
+        const { left, right } = range.getBoundingClientRect();
+        return { left, right };
+      }
+    });
+    const selected = page.locator('.cm-selectionLayer .cm-selectionBackground');
+    await expect.poll(async () => {
+      const box = await selected.boundingBox();
+      return box && Math.max(Math.abs(box.x - word.left), Math.abs(box.x + box.width - word.right));
+    }).toBeLessThan(2);
+
+    // And the proof marks it with the highlighter stroke.
+    await expect(page.locator('#preview .proof-mark')).toHaveCount(1);
 
     await page.evaluate(() => localStorage.clear());
   });

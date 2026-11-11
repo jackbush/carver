@@ -70,7 +70,7 @@
 
   /* Riso inks: Orange for marks, Sunflower for the highlighter */
   --accent: #e8551c;         /* orange deepened for paper: caret, focus, link underline (3.6:1) */
-  --highlight: rgb(255 181 17 / 0.45);   /* Sunflower: ==highlight== and anything chosen */
+  --highlight: rgb(255 181 17 / 0.45);   /* Sunflower: the selection on the proof, and anything chosen */
   --selection: rgb(255 108 47 / 0.22);   /* Orange, faint: selected text, distinct from a highlight */
   --hover: rgb(20 20 20 / 0.10);         /* grey: the highlight a pointer previews */
 
@@ -143,21 +143,34 @@ button {
 
 ::selection { background: var(--selection); }
 
-/* The highlighter: a stroke through the lower part of serif words, its top
-   1px above the lowercase letters. Each user sets --stroke-colour. Measured
-   from Source Serif 4, whose character box is 1.38em tall with the x-height
-   0.576em below its top. */
-mark,
+/* The highlighter: a stroke 0.836em tall through the lower part of serif
+   words, its top above the lowercase letters. Each user sets
+   --stroke-colour. Measured from Source Serif 4, whose character box is
+   1.38em tall with the x-height 0.576em below its top. */
+.proof-mark,
 .choices .word {
   background: linear-gradient(var(--stroke-colour), var(--stroke-colour)) no-repeat;
-  background-position: 0 calc(0.576em - 1px);
-  background-size: 100% 0.58em;
+  background-position: 0 calc(0.448em - 1px);
+  background-size: 100% 0.836em;
 }
 
-/* ==Highlight==, on the proof and in the Guide */
-mark {
+/* The typescript's selection, on the proof (src/modules/proof-highlight.js):
+   each stroke is drawn over one line's character box, behind the text. */
+.proof-marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* A selection made on the proof selects its source, which is then marked
+   with the stroke; the browser's own selection would only double it. */
+.sheet-body ::selection { background: transparent; }
+
+.proof-mark {
   --stroke-colour: var(--highlight);
-  color: inherit;
+  position: absolute;
+  box-sizing: content-box;
+  margin-left: -0.08em;
   padding: 0 0.08em;
 }
 
@@ -311,6 +324,7 @@ body.single-pane #view-tabs button[aria-selected="true"] {
 #preview:focus { outline: none; }
 
 .sheet {
+  position: relative;
   background: var(--paper);
   color: var(--ink);
   margin: 0 auto;
@@ -374,7 +388,9 @@ body.single-pane #view-tabs button[aria-selected="true"] {
 }
 
 /* ── Proof typography ───────────────────────────────────── */
+/* Positioned, so the text paints over the selection's strokes. */
 .sheet-body {
+  position: relative;
   font-family: var(--font-text);
   font-optical-sizing: auto;
   font-kerning: normal;
@@ -542,8 +558,6 @@ body.single-pane #view-tabs button[aria-selected="true"] {
   font-weight: 600;
   border-bottom-color: var(--ink);
 }
-
-.sheet-body ::selection { background: var(--selection); }
 
 /* ── Dialogs ────────────────────────────────────────────── */
 .modal-overlay {
@@ -832,7 +846,6 @@ body.single-pane .modal-panel {
     --rule: #e6e4df;
     --code-ground: #f6f5f2;
     --accent: #e8551c;
-    --highlight: rgb(255 181 17 / 0.45);
   }
 
   *, *::before, *::after {
@@ -843,7 +856,8 @@ body.single-pane .modal-panel {
   #masthead,
   #editor-pane,
   .modal-overlay,
-  .modal-panel {
+  .modal-panel,
+  .proof-marks {
     display: none !important;
   }
 

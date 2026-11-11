@@ -192,7 +192,7 @@ components:
 
 **Creative North Star: "The Galley Proof"**
 
-Carver is a proofing desk. On one side lies the typescript: Courier Prime on plain paper, where the markdown shows. On the other is a photocopier-grey desk with a white sheet set in Source Serif 4, which is how the words will print. The chrome stays out of the way. It is a thin ink band across the top (and along the bottom on phones) that frames both panes evenly, set in the same serif as the proof, where each action is a plain word with a thin line icon beside it, and there are no pills or coloured buttons. The only colour comes from two riso inks, bright and fun but calm, never fluorescent. Riso Orange marks where an editor's pen would go (the caret, under a link, around focus, the icon of the open action) and sets the "Carver" wordmark; a faint wash of it marks selected text. Sunflower is the highlighter: a translucent stroke across the lower part of the words, for `==highlight==` and for anything chosen.
+Carver is a proofing desk. On one side lies the typescript: Courier Prime on plain paper, where the markdown shows. On the other is a photocopier-grey desk with a white sheet set in Source Serif 4, which is how the words will print. The chrome stays out of the way. It is a thin ink band across the top (and along the bottom on phones) that frames both panes evenly, set in the same serif as the proof, where each action is a plain word with a thin line icon beside it, and there are no pills or coloured buttons. The only colour comes from two riso inks, bright and fun but calm, never fluorescent. Riso Orange marks where an editor's pen would go (the caret, under a link, around focus, the icon of the open action) and sets the "Carver" wordmark; a faint wash of it marks selected text. Sunflower is the highlighter: a translucent stroke across the lower part of the words, marking on the proof whatever is selected in the typescript, and anything chosen.
 
 The density is low and the hierarchy is typographic. Everything outside the proof is set at almost one size and one weight, so the large title on the sheet is the loudest thing on screen. Depth is physical, not decorative: sheets and panels sit on the desk with a soft, low shadow, the way paper does. After dark, the whole desk changes with it: grounds go low-glare, ink goes warm and light, the orange brightens and the highlighter thins. Print is always light.
 
@@ -213,10 +213,10 @@ The palette is greyscale paper and ink with two riso inks, so it reads like a ma
 ### Primary
 - **Orange** (accent; dark-accent after dark): marks on paper. The caret (a 2px line drawn at 80% of the line height, centred, blinking slowly on and off), the focus ring on paper (2px outline, 2px offset), link underlines on the proof, and the filename field's focus ring. In light it is deepened for paper (3.6:1 on white); after dark it is full Riso Orange. It is never a fill on a control, never a state ground and never body text.
 - **Riso Orange** (bar-accent, the same in both appearances): Orange as it reads on the ink band (6:1 on the bar). It is the wordmark, the icon of the open bar action and the focus ring inside the bar. The preview images' stage is computed from it: the opposite hue at 100% saturation and 9% lightness (a deep blue, hsl(198 100% 9%)).
-- **Selection** (selection; dark-selection): a faint orange wash behind selected text, in the typescript and on the proof. It is deliberately distinct from a highlight, so selecting highlighted text still reads as a selection.
+- **Selection** (selection; dark-selection): a faint orange wash behind selected text in the typescript and in the chrome. On the proof a selection is marked with the Sunflower highlighter instead (see Selection on the proof).
 
 ### Secondary
-- **Sunflower** (highlight; dark-highlight): the highlighter. Translucent Riso Sunflower: a stroke for `==highlight==` on the proof and in the Guide and under the chosen word in Settings, and a plain box around highlighted characters in the typescript. Text on it is always ink. Print forces the light value, as it does Orange.
+- **Sunflower** (highlight; dark-highlight): the highlighter. Translucent Riso Sunflower: a stroke on the proof under whatever is selected in the typescript, and under the chosen word in Settings. Text on it is always ink. It never prints.
 - **Bar Sunflower** (bar-highlight, the same in both appearances): Sunflower thinned for the ink band. It is the chip behind the open bar action and the selected Write/Proof tab, with bar-ink text.
 - **Hover** (hover; dark-hover): a grey stroke, the highlight a pointer previews on a settings choice before it is chosen.
 
@@ -237,9 +237,9 @@ The palette is greyscale paper and ink with two riso inks, so it reads like a ma
 - **Code Ground** (code-ground / dark-code-ground): the faint ground under code on the proof and in the typescript. In the typescript it is drawn on a CodeMirror layer beneath the selection layer, under inline code and under every line of a code block, fences included, so an unclosed block visibly runs on to the end and a selection always shows over code.
 
 ### Named Rules
-**The Two Inks Rule.** Orange is a mark, Sunflower is a highlighter. Orange appears only where a proofreader's pen would (the caret, links, focus, the open action's icon) plus the wordmark, and faintly behind selected text. Sunflower appears only as the highlighter stroke: on `==highlight==` and on anything chosen. If an element is orange or yellow for any other reason, it is wrong.
+**The Two Inks Rule.** Orange is a mark, Sunflower is a highlighter. Orange appears only where a proofreader's pen would (the caret, links, focus, the open action's icon) plus the wordmark, and faintly behind selected text. Sunflower appears only as the highlighter stroke: on the proof under the typescript's selection, and on anything chosen. If an element is orange or yellow for any other reason, it is wrong.
 
-**The Highlighter Rule.** One mechanic marks "chosen": the Sunflower highlight. In Settings it is the highlighter stroke under the chosen word, the same stroke as `==highlight==`; on the ink band, where a stroke would be lost, the open bar action and the selected Write/Proof tab wear Bar Sunflower as a chip (2px corner) with bar-ink text. Chosen state is never a solid fill, an underline or inset rule, a border, a coloured pill or bold text, and it is never the selection colour.
+**The Highlighter Rule.** One mechanic marks "chosen": the Sunflower highlight. In Settings it is the highlighter stroke under the chosen word, the same stroke that marks the selection on the proof; on the ink band, where a stroke would be lost, the open bar action and the selected Write/Proof tab wear Bar Sunflower as a chip (2px corner) with bar-ink text. Chosen state is never a solid fill, an underline or inset rule, a border, a coloured pill or bold text, and it is never the selection colour.
 
 **The Ink Band Rule.** The masthead and the phone toolbar are one ink band that frames both panes evenly. The desk never doubles as the bar. The band sits above the panel scrim so it stays clear while a panel is open.
 
@@ -332,11 +332,11 @@ Settings is a short list of rows set like the Guide's, in order: Text size (Smal
 - **Row:** the setting's name on the left in ink-2, the choices inline on the right, baseline-aligned, 1.5rem apart at least, with 0.6rem above and below. A 1px rule separates rows; the last has none.
 - **Choices:** words in ink-2 (0.15em side padding), separated by a "•" in ink-3 with 0.5em either side, hidden from assistive tech (empty alt text on the generated content). The radio itself is visually hidden.
 - **Hover:** the word previews the highlighter stroke in grey (hover) and goes to ink.
-- **Chosen:** the word goes to ink and wears the Sunflower highlighter stroke, the same stroke as `==highlight==`.
+- **Chosen:** the word goes to ink and wears the Sunflower highlighter stroke, the same stroke that marks the selection on the proof.
 - **Focus:** a 2px Orange outline at 2px offset around the word (2px corner).
 
 ### Highlighter
-One shared stroke serves the serif text (`==highlight==` on the proof and in the Guide, and the settings choices): a band of colour 0.58em tall whose top sits 1px above the lowercase letters (0.576em below the top of Source Serif 4's 1.38em character box), with no corner. In the typescript the markdown is highlighted conventionally instead: a plain box exactly around the characters, 1px larger on each side. Each user sets only the stroke's colour: Sunflower for a highlight or a chosen word, grey for a hovered choice, transparent at rest. Never restyle the band per user; change its colour.
+One shared stroke serves the serif text (the selection on the proof, and the settings choices): a band of colour 0.836em tall whose top sits 0.448em + 1px below the top of Source Serif 4's 1.38em character box, above the lowercase letters (x-height at 0.576em), with no corner. Each user sets only the stroke's colour: Sunflower for the selection or a chosen word, grey for a hovered choice, transparent at rest. Never restyle the band per user; change its colour.
 
 ### Inputs / Fields
 - **Filename field:** a 1px control-line box with a 3px corner, set in Courier Prime at 15px (16px under 800px to prevent iOS zoom). The `.md` extension is shown in ink-3 and is not selectable.
@@ -350,19 +350,19 @@ Paper with the sheet shadow, set in proof typography.
 - **Section break:** an asterism, three ink-3 asterisks separated by em spaces, centred with 1.6em space above and below.
 - **Lists:** unordered items use drawn ink-3 discs (0.3em, at 0.95em into the indent), not glyph bullets. Ordered markers are ink-3 oldstyle numerals.
 - **Links:** text in ink with a 1px Orange underline at a 0.18em offset.
-- **Highlight (`==text==`):** the Sunflower highlighter stroke (0.08em side padding) on the proof and in the Guide. In the typescript, a plain Sunflower box around the highlighted characters (not the `==` marks), 1px larger on each side, drawn on the ground layer beneath the selection. The welcome heading highlights "Carver". Printing uses the light Sunflower.
+- **Selection on the proof:** the typescript and the proof share one selection. Whatever is selected in the typescript wears the Sunflower highlighter stroke (0.08em side padding), live, on the words it became, and a selection made on the proof selects its source in the typescript (without scrolling it) and is marked the same way, the browser's own selection colour hidden; markdown syntax is never marked, and the spaces where lines wrap are left bare. The strokes are drawn on a layer behind the text in each sheet, one per line, so the proof's layout and page breaks never change. Inline code keeps its own ground over the stroke. Print hides the strokes.
 - **Blockquote:** roman ink-2 at 0.96em, 1.2em in from a 1px control-line rule at the left.
 - **Code block:** Courier Prime at 0.86em on code-ground, padded 0.9em 1.1em, square.
 - **Tables:** tabular lining numerals at 0.92em, rule hairlines between rows, and an ink rule under the header.
 - **Folio:** centred oldstyle page number in ink-3 at 0.8em (paged mode only).
 
 ### Typescript
-A CodeMirror surface on paper with a 68ch centred measure and 40vh of run-out at the bottom. The caret and selection are drawn on CodeMirror's own layers (`src/modules/proof-selection.js`) from its own geometry: the caret is a 2px Orange line at 80% of the line height, centred where CodeMirror places it, so it is the same on empty lines and beside text, blinking slowly (1.6s); a selection piece that covers one line grows to the full line height, so short and long selections look alike. The selection is the faint orange wash. The scrollbar is thin.
+A CodeMirror surface on paper with a 68ch centred measure and 40vh of run-out at the bottom. The caret and selection are drawn on CodeMirror's own layers (`src/modules/proof-selection.js`) from its own geometry: the caret is a 2px Orange line at 80% of the line height, centred where CodeMirror places it, so it is the same on empty lines and beside text, blinking slowly (1.6s); a selection fills whole lines, so short and long selections look alike, and the rows of a longer one meet without overlapping. The selection is the faint orange wash. The scrollbar is thin.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep Orange to the wordmark, caret, links, focus and the open action's icon (and, faintly, selected text), and Sunflower to highlights and choices.
+- **Do** keep Orange to the wordmark, caret, links, focus and the open action's icon (and, faintly, selected text), and Sunflower to the selection on the proof and to choices.
 - **Do** show chosen state with Sunflower under ink: the highlighter stroke under the chosen word in settings, a Bar Sunflower chip on bar actions and tabs.
 - **Do** keep the masthead and phone toolbar one ink band above the scrim, with `theme-color` following it.
 - **Do** give every action its plain word in Source Serif 4, with a 16px line icon (1.5 stroke, round caps) beside it on desktop and above it on phones.
@@ -376,7 +376,7 @@ A CodeMirror surface on paper with a 68ch centred measure and 40vh of run-out at
 ### Don't:
 - **Don't** show an icon without its word. Close is the only exception, and it carries aria-label "Close".
 - **Don't** show state with an underline, an inset rule, a border, a pill, a solid fill or bold text. The Sunflower highlight is the only state ground.
-- **Don't** use the selection colour for chosen state, or Sunflower for selection.
+- **Don't** use the selection colour for chosen state, or Sunflower for any selection but the typescript's, mirrored on the proof.
 - **Don't** put settings in bordered segmented controls, boxes or cells.
 - **Don't** use the desk as the bar colour.
 - **Don't** fill a button with Orange or Sunflower. Primary is ink.

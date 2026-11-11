@@ -20,6 +20,6 @@ The typescript and the proof always scroll together, matched by content.
 ## Stack
 - Vite (vanilla JS)
 - CodeMirror 6
-- markdown-it (+ markdown-it-mark for `==highlight==`)
+- markdown-it
 - Vitest (unit tests)
 - Playwright (E2E tests, requires local install — see below)

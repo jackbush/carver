@@ -1,16 +1,16 @@
 import './style.css';
 import markdownit from 'markdown-it';
-import markdownitMark from 'markdown-it-mark';
 import { loadSettings, saveSettings, applySettings, syncSettingsUI, onSettingsInput, onSystemThemeChange } from './modules/settings.js';
 import { createEditor, updateEditorSettings } from './modules/editor.js';
 import { getDefaultFilename, triggerDownload } from './modules/download.js';
 import { MARGIN_RATIO, applyPaper, paginate, paperForLocale, paperWidthPx } from './modules/pages.js';
 import { linkScroll } from './modules/scroll-sync.js';
+import { highlightSelection, sourceSelection } from './modules/proof-highlight.js';
 import { countWords, formatWordCount } from './modules/words.js';
 
 // ── Markdown renderer ────────────────────────────────────
 // A single newline is a line break: writers expect what they type to be what they see.
-const md = markdownit({ linkify: true, typographer: true, breaks: true }).use(markdownitMark);
+const md = markdownit({ linkify: true, typographer: true, breaks: true });
 
 // Tag every block with its first source line, so scrolling can match the
 // typescript to the proof by content.
@@ -69,6 +69,7 @@ function renderProof() {
   for (const img of proofEl.querySelectorAll('img')) {
     if (!img.complete) img.addEventListener('load', scheduleRender, { once: true });
   }
+  drawSelection();
 }
 
 // Coalesce bursts of keystrokes into one layout per frame.
@@ -80,6 +81,31 @@ function setContent(content) {
   latestContent = content;
   scheduleRender();
 }
+
+// ── Selection on the proof ───────────────────────────────
+// Whatever is selected in the typescript is highlighted on the proof. A
+// pending render draws it once the proof matches the typescript again.
+let selectionFrame = null;
+
+function drawSelection() {
+  selectionFrame = null;
+  highlightSelection(proofEl, latestContent, editor.view.state.selection.ranges);
+}
+
+function scheduleSelection() {
+  if (selectionFrame === null && renderFrame === null) selectionFrame = requestAnimationFrame(drawSelection);
+}
+
+// A selection made on the proof selects its source in the typescript, which
+// then highlights it as above. The typescript doesn't scroll to it, so the
+// proof stays put under the pointer.
+document.addEventListener('selectionchange', () => {
+  if (renderFrame !== null) return;
+  const selection = sourceSelection(proofEl, latestContent, document.getSelection());
+  const { main } = editor.view.state.selection;
+  if (!selection || (main.anchor === selection.anchor && main.head === selection.head)) return;
+  editor.view.dispatch({ selection, userEvent: 'select' });
+});
 
 // Scales the laid-out pages to the desk. On a wide desk the whole sheet fits;
 // on a phone the text column fills the screen and most of the margin is cropped,
@@ -149,12 +175,16 @@ const editor = createEditor(
   (content) => {
     setContent(content);
     scheduleContentSave(content);
-  }
+  },
+  scheduleSelection
 );
 updateEditorSettings(editor, settings);
 
 // Page breaks depend on the real faces' metrics.
 document.fonts.ready.then(scheduleRender);
+
+// A continuous sheet rewraps as the desk changes width; the highlight follows the text.
+new ResizeObserver(scheduleSelection).observe(proofEl);
 
 // ── Synchronized scrolling ───────────────────────────────
 const scrollSync = linkScroll(editor.view, previewEl);
@@ -176,6 +206,7 @@ function switchView(next) {
   if (view === 'proof') {
     // A hidden proof can't be measured, so lay it out now it shows, then bring it to the writer's place.
     if (isPaged()) renderProof();
+    else drawSelection();
     scrollSync.fromEditor();
   }
 }
