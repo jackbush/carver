@@ -5,8 +5,8 @@ import { EditorSelection, Prec } from '@codemirror/state';
 // its own geometry. Two changes from the stock drawSelection:
 //  - the caret is a fixed share of the line height, centred where CodeMirror
 //    places it, so it's the same on an empty line as beside text;
-//  - a selection piece that covers a single line grows to the full line
-//    height, so a short selection fills the line like a long one does.
+//  - a selection fills whole lines, so a short selection fills the line like a
+//    long one does, and the rows of a longer one meet without overlapping.
 // The layers reuse CodeMirror's class names, so its base theme still handles
 // focus, stacking and the blink keyframes.
 
@@ -40,19 +40,44 @@ const cursorLayer = layer({
   },
 });
 
+// CodeMirror draws a selection as a first row, a block between and a last row,
+// meeting at the text's edges, not the line's. Grow the outer edges by the
+// line's leading so they cover the full line, and shift the inner edges by the
+// same amount so the pieces still meet without overlapping. When the rows are
+// adjacent CodeMirror already meets them halfway, on the line boundary.
+function fullLines(view, range, line) {
+  const pieces = RectangleMarker.forRange(view, 'cm-selectionBackground', range);
+  if (!pieces.length) return pieces;
+  const first = pieces[0].top;
+  const last = pieces[pieces.length - 1].top;
+  if (first === last) return pieces.map((m) => (m.height < line ? centred(m, line) : m));
+  const glyph = view.coordsAtPos(range.from, 1);
+  const lead = glyph ? Math.max(0, (line - (glyph.bottom - glyph.top)) / 2) : 0;
+  const between = pieces.some((m) => m.top !== first && m.top !== last);
+  return pieces.map((m) => {
+    let top = m.top, bottom = m.top + m.height;
+    if (m.top === first) {
+      top -= lead;
+      if (between) bottom += lead;
+    } else if (m.top === last) {
+      if (between) top -= lead;
+      bottom += lead;
+    } else {
+      top += lead;
+      bottom -= lead;
+    }
+    return new RectangleMarker(m.className, m.left, top, m.width, bottom - top);
+  });
+}
+
 const selectionLayer = layer({
   above: false,
   class: 'cm-selectionLayer',
   markers(view) {
     const line = view.defaultLineHeight;
-    const markers = [];
-    for (const range of view.state.selection.ranges) {
-      if (range.empty) continue;
-      for (const marker of RectangleMarker.forRange(view, 'cm-selectionBackground', range)) {
-        markers.push(marker.height < line ? centred(marker, line) : marker);
-      }
-    }
-    return markers;
+    return view.state.selection.ranges
+      .filter((range) => !range.empty)
+      .flatMap((range) => fullLines(view, range, line));
   },
   update(update) {
     return update.docChanged || update.selectionSet || update.viewportChanged || update.geometryChanged;
