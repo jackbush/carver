@@ -470,12 +470,11 @@ body.single-pane #view-tabs button[aria-selected="true"] {
 
 .sheet-body blockquote {
   margin: 0 0 0.85em;
-  padding-left: 1.6em;
+  padding-left: 1.2em;
+  border-left: 1px solid var(--control-line);
   color: var(--ink-2);
-  font-style: italic;
+  font-size: 0.96em;
 }
-
-.sheet-body blockquote em { font-style: normal; }
 
 .sheet-body ul,
 .sheet-body ol {

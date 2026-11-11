@@ -351,7 +351,7 @@ Paper with the sheet shadow, set in proof typography.
 - **Lists:** unordered items use drawn ink-3 discs (0.3em, at 0.95em into the indent), not glyph bullets. Ordered markers are ink-3 oldstyle numerals.
 - **Links:** text in ink with a 1px Orange underline at a 0.18em offset.
 - **Highlight (`==text==`):** the Sunflower highlighter stroke (0.08em side padding) on the proof and in the Guide. In the typescript, a plain Sunflower box around the highlighted characters (not the `==` marks), 1px larger on each side, drawn on the ground layer beneath the selection. The welcome heading highlights "Carver". Printing uses the light Sunflower.
-- **Blockquote:** italic ink-2 with a 1.6em indent and no rule. Emphasis inside a blockquote switches back to roman.
+- **Blockquote:** roman ink-2 at 0.96em, 1.2em in from a 1px control-line rule at the left.
 - **Code block:** Courier Prime at 0.86em on code-ground, padded 0.9em 1.1em, square.
 - **Tables:** tabular lining numerals at 0.92em, rule hairlines between rows, and an ink rule under the header.
 - **Folio:** centred oldstyle page number in ink-3 at 0.8em (paged mode only).
