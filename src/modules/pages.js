@@ -162,19 +162,23 @@ function splitAtLine(el, limit) {
     return index;
   };
 
+  // A line's box reaches below its glyphs by half the leading, so a paragraph
+  // can overrun the page when only its last line's leading does.
+  const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || rectOf(chars[0]).height * 1.4;
+  const leading = Math.max(0, (lineHeight - rectOf(chars[0]).height) / 2);
+
   // First character whose line crosses the limit.
   let lo = 0;
   let hi = chars.length;
   while (lo < hi) {
     const mid = (lo + hi) >> 1;
-    if (rectOf(chars[mid]).bottom > limit + 0.5) hi = mid;
+    if (rectOf(chars[mid]).bottom + leading > limit + 0.5) hi = mid;
     else lo = mid + 1;
   }
   if (lo >= chars.length) return null;
   lo = lineStart(lo);
 
   // Keep at least two lines on each side of the break.
-  const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || rectOf(chars[lo]).height * 1.4;
   const firstTop = rectOf(chars[0]).top;
   const lastBottom = rectOf(chars[chars.length - 1]).bottom;
   const linesBefore = () => Math.round((rectOf(chars[lo]).top - firstTop) / lineHeight);
