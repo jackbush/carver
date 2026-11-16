@@ -16,7 +16,7 @@ colors:
   syntax-dim: "#8a8782"
   rule: "#e6e4df"
   control-line: "#cfccc5"
-  code-ground: "#f6f5f2"
+  code-ground: "rgb(105 88 38 / 0.06)"
   bar: "#1d1c1a"
   bar-line: "#1d1c1a"
   bar-ink: "#ece9e3"
@@ -37,7 +37,7 @@ colors:
   dark-syntax-dim: "#8a867f"
   dark-rule: "#33312e"
   dark-control-line: "#4a4743"
-  dark-code-ground: "#282624"
+  dark-code-ground: "rgb(181 163 161 / 0.06)"
   dark-bar: "#0d0c0b"
   dark-bar-line: "#2e2c29"
   dark-bar-ink: "#e8e5df"
@@ -234,7 +234,7 @@ The palette is greyscale paper and ink with two riso inks, so it reads like a ma
 - **Syntax Dim** (syntax-dim / dark-syntax-dim): markdown punctuation and URLs in the typescript; visible but quiet.
 - **Rule** (rule / dark-rule): light rules between table rows on the proof, between rows in the Guide and between settings.
 - **Control Line** (control-line / dark-control-line): 1px strokes around buttons and the filename field, plus the thin scrollbars.
-- **Code Ground** (code-ground / dark-code-ground): the faint ground under code on the proof and in the typescript. In the typescript it is drawn on a CodeMirror layer beneath the selection layer, under inline code and under every line of a code block, fences included, so an unclosed block visibly runs on to the end and a selection always shows over code.
+- **Code Ground** (code-ground / dark-code-ground): the faint ground under code on the proof and in the typescript. It is translucent, so the highlighter stroke, drawn behind the proof's text, shows through it. In the typescript it is drawn on a CodeMirror layer beneath the selection layer, under inline code and under every line of a code block, fences included, so an unclosed block visibly runs on to the end and a selection always shows over code.
 
 ### Named Rules
 **The Two Inks Rule.** Orange is a mark, Sunflower is a highlighter. Orange appears only where a proofreader's pen would (the caret, links, focus, the open action's icon) plus the wordmark, and faintly behind selected text. Sunflower appears only as the highlighter stroke: on the proof under the typescript's selection, and on anything chosen. If an element is orange or yellow for any other reason, it is wrong.

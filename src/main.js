@@ -20,6 +20,15 @@ md.core.ruler.push('source_line', (state) => {
   }
 });
 
+// markdown-it puts a fence's attributes on its <code>; the line belongs on the
+// <pre>, the block itself.
+const renderFence = md.renderer.rules.fence;
+md.renderer.rules.fence = (tokens, idx, ...rest) => {
+  const line = tokens[idx].attrGet('data-line');
+  tokens[idx].attrs = tokens[idx].attrs.filter(([name]) => name !== 'data-line');
+  return renderFence(tokens, idx, ...rest).replace(/^<pre/, `<pre data-line="${line}"`);
+};
+
 // ── State ────────────────────────────────────────────────
 const CONTENT_KEY = 'carver-content';
 const SINGLE_PANE_BELOW = 800;

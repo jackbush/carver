@@ -1,7 +1,7 @@
 import { EditorView, RectangleMarker, keymap, layer } from '@codemirror/view';
 import { EditorSelection, EditorState, Compartment } from '@codemirror/state';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
-import { markdown } from '@codemirror/lang-markdown';
+import { deleteMarkupBackward, insertNewlineContinueMarkupCommand, markdown } from '@codemirror/lang-markdown';
 import { HighlightStyle, syntaxHighlighting, syntaxTree } from '@codemirror/language';
 import { tags } from '@lezer/highlight';
 import { proofSelection } from './proof-selection.js';
@@ -111,12 +111,20 @@ export function createEditor(container, content, onChange, onSelect) {
       doc: content,
       extensions: [
         history(),
-        keymap.of([...defaultKeymap, ...historyKeymap]),
+        // Markdown's own Enter, except that Enter on an empty item between others
+        // doesn't add a blank line above it: that loosens the list, and every
+        // later Enter in it then adds a blank line too.
+        keymap.of([
+          { key: 'Enter', run: insertNewlineContinueMarkupCommand({ nonTightLists: false }) },
+          { key: 'Backspace', run: deleteMarkupBackward },
+          ...defaultKeymap,
+          ...historyKeymap,
+        ]),
         EditorView.lineWrapping,
         proofSelection(),
         // Registered after the selection: CodeMirror stacks later layers further back.
         grounds,
-        markdown(),
+        markdown({ addKeymap: false }),
         highlighting,
         themeCompartment.of(initialTheme),
         EditorView.contentAttributes.of({ 'aria-label': 'Markdown editor', 'aria-multiline': 'true' }),
